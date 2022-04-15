@@ -18,11 +18,11 @@ const sketch = (p5: P5) => {
 		let canvasX:number = 500 
 		let canvasY:number = 200 
 		const canvas = p5.createCanvas(canvasX, canvasY);
-		const graundStartPos = p5.createVector(0, canvasY);
+		const graundStartPos = p5.createVector(5, canvasY-20);
 
 		p5.background("white");
 		
-		moly = new Moly(p5, p5.createVector(graundStartPos.x, graundStartPos.y),Path.molyImg)
+		moly = new Moly(p5, p5.createVector(graundStartPos.x,  graundStartPos.y),Path.molyImg)
 		moly.jump()
 		 
 		for (let i = 1; i < 4; i++) {
@@ -33,13 +33,19 @@ const sketch = (p5: P5) => {
 		}
 	};
 
+	// p5.keyPressed();
 	// The sketch draw method
 	p5.draw = () => {
 		// DEMO: Let the circle instances draw themselves
 		moly.draw();
-
+		moly.jump();
 		myCircles.forEach(circle => circle.draw());
 	};
+
+
+
+
+
 };
 
 new P5(sketch);

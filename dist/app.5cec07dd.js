@@ -89376,6 +89376,197 @@ var MyCircle = /*#__PURE__*/function () {
 }();
 
 exports.default = MyCircle;
+},{}],"src/sprite/character/Character.ts":[function(require,module,exports) {
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Character = void 0;
+
+var p5_1 = require("p5");
+
+var Character = /*#__PURE__*/function () {
+  function Character(p5, position) {
+    _classCallCheck(this, Character);
+
+    this._p5 = p5;
+    this._pos = position;
+    this._size = 100;
+    this._speed = new p5_1.Vector();
+    this._speed.x = 0;
+    this._speed.y = 0;
+  }
+
+  _createClass(Character, [{
+    key: "draw",
+    value: function draw() {
+      var p5 = this._p5; // just for convenience
+
+      p5.push(); // p5.translate(this._pos);
+
+      p5.noStroke();
+      p5.fill("orange"); // p5.ellipse(0, 0, this._size);
+
+      p5.ellipse(this._pos.x, this._pos.y, this._size);
+      p5.pop();
+    }
+  }, {
+    key: "jump",
+    value: function jump() {
+      var _this = this;
+
+      this._speed.y += 10;
+      setTimeout(function () {
+        _this._speed.y -= 10;
+        console.log("character jumped");
+      }, 1000);
+    }
+  }]);
+
+  return Character;
+}();
+
+exports.Character = Character;
+},{"p5":"node_modules/p5/lib/p5.js"}],"src/sprite/character/ImageCharacter.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ImageCharacter = void 0;
+
+var Character_1 = require("./Character");
+
+var ImageCharacter = /*#__PURE__*/function (_Character_1$Characte) {
+  _inherits(ImageCharacter, _Character_1$Characte);
+
+  var _super = _createSuper(ImageCharacter);
+
+  function ImageCharacter(p5, position, imagePath) {
+    var _this;
+
+    _classCallCheck(this, ImageCharacter);
+
+    _this = _super.call(this, p5, position);
+    _this._p5 = p5;
+    _this.imagePath = imagePath;
+    return _this;
+  }
+
+  _createClass(ImageCharacter, [{
+    key: "loadImage",
+    value: function loadImage() {
+      this._image = this._p5.loadImage(this.imagePath);
+    }
+  }]);
+
+  return ImageCharacter;
+}(Character_1.Character);
+
+exports.ImageCharacter = ImageCharacter;
+},{"./Character":"src/sprite/character/Character.ts"}],"src/sprite/character/Moly.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Moly = void 0;
+
+var ImageCharacter_1 = require("./ImageCharacter");
+
+var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
+  _inherits(Moly, _ImageCharacter_1$Ima);
+
+  var _super = _createSuper(Moly);
+
+  function Moly(p5, position, imagePath) {
+    _classCallCheck(this, Moly);
+
+    return _super.call(this, p5, position, imagePath);
+  }
+
+  _createClass(Moly, [{
+    key: "jump",
+    value: function jump() {
+      console.log("moly jumped");
+    }
+  }]);
+
+  return Moly;
+}(ImageCharacter_1.ImageCharacter);
+
+exports.Moly = Moly;
+},{"./ImageCharacter":"src/sprite/character/ImageCharacter.ts"}],"src/utils/Path.ts":[function(require,module,exports) {
+"use strict";
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Path = void 0;
+
+var Path = /*#__PURE__*/_createClass(function Path() {
+  _classCallCheck(this, Path);
+});
+
+exports.Path = Path;
+Path.molyImg = "./src/image/moly.png";
 },{}],"src/app.ts":[function(require,module,exports) {
 "use strict";
 
@@ -89397,24 +89588,30 @@ require("p5/lib/addons/p5.dom"); // import "p5/lib/addons/p5.sound";	// Include 
 require("./styles.scss"); // DEMO: A sample class implementation
 
 
-var MyCircle_1 = __importDefault(require("./MyCircle")); // Creating the sketch itself
+var MyCircle_1 = __importDefault(require("./MyCircle"));
 
+var Moly_1 = require("./sprite/character/Moly");
+
+var Path_1 = require("./utils/Path");
 
 var sketch = function sketch(p5) {
   // DEMO: Prepare an array of MyCircle instances
-  var myCircles = []; // The sketch setup method 
+  var moly;
+  var myCircles = [];
 
   p5.setup = function () {
-    // Creating and positioning the canvas
-    var canvas = p5.createCanvas(200, 200);
-    canvas.parent("app"); // Configuring the canvas
-
-    p5.background("white"); // DEMO: Create three circles in the center of the canvas
+    var canvasX = 500;
+    var canvasY = 200;
+    var canvas = p5.createCanvas(canvasX, canvasY);
+    var graundStartPos = p5.createVector(0, canvasY);
+    p5.background("white");
+    moly = new Moly_1.Moly(p5, p5.createVector(graundStartPos.x, graundStartPos.y), Path_1.Path.molyImg);
+    moly.jump();
 
     for (var i = 1; i < 4; i++) {
       var p = p5.width / 4;
       var circlePos = p5.createVector(p * i, p5.height / 2);
-      var size = i % 2 !== 0 ? 27 : 32;
+      var size = i % 2 !== 0 ? 40 : 32;
       myCircles.push(new MyCircle_1.default(p5, circlePos, size));
     }
   }; // The sketch draw method
@@ -89422,6 +89619,7 @@ var sketch = function sketch(p5) {
 
   p5.draw = function () {
     // DEMO: Let the circle instances draw themselves
+    moly.draw();
     myCircles.forEach(function (circle) {
       return circle.draw();
     });
@@ -89429,7 +89627,7 @@ var sketch = function sketch(p5) {
 };
 
 new p5_1.default(sketch);
-},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./MyCircle":"src/MyCircle.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./MyCircle":"src/MyCircle.ts","./sprite/character/Moly":"src/sprite/character/Moly.ts","./utils/Path":"src/utils/Path.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -89457,7 +89655,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65311" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56483" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

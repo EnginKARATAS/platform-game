@@ -10,10 +10,14 @@ export class Character {
     this._p5 = p5;
     this._pos = position;
 
-    this._size = 100;
+    this._size = 10;
     this._speed = new Vector();
     this._speed.x = 0;
     this._speed.y = 0;
+  }
+
+  get pos(): Vector {
+    return this._pos;
   }
 
   draw() {
@@ -31,10 +35,7 @@ export class Character {
   }
 
   jump() {
-    this._speed.y += 10;
-    setTimeout(() => {
-      this._speed.y -= 10;
-      console.log("character jumped");
-    }, 1000);
+  }
+  move() {
   }
 }
