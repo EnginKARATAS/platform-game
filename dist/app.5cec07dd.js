@@ -89397,6 +89397,7 @@ var Character = /*#__PURE__*/function () {
     _classCallCheck(this, Character);
 
     this._p5 = p5;
+    this._jumpAcc = -5;
     this._pos = position;
     this._size = 100;
     this._speed = new p5_1.Vector();
@@ -89405,6 +89406,11 @@ var Character = /*#__PURE__*/function () {
   }
 
   _createClass(Character, [{
+    key: "pos",
+    get: function get() {
+      return this._pos;
+    }
+  }, {
     key: "draw",
     value: function draw() {
       var p5 = this._p5; // just for convenience
@@ -89412,21 +89418,10 @@ var Character = /*#__PURE__*/function () {
       p5.push(); // p5.translate(this._pos);
 
       p5.noStroke();
-      p5.fill("orange"); // p5.ellipse(0, 0, this._size);
+      p5.fill("black"); // p5.ellipse(0, 0, this._size);
 
       p5.ellipse(this._pos.x, this._pos.y, this._size);
       p5.pop();
-    }
-  }, {
-    key: "jump",
-    value: function jump() {
-      var _this = this;
-
-      this._speed.y += 10;
-      setTimeout(function () {
-        _this._speed.y -= 10;
-        console.log("character jumped");
-      }, 1000);
     }
   }]);
 
@@ -89493,7 +89488,27 @@ var ImageCharacter = /*#__PURE__*/function (_Character_1$Characte) {
 }(Character_1.Character);
 
 exports.ImageCharacter = ImageCharacter;
-},{"./Character":"src/sprite/character/Character.ts"}],"src/sprite/character/Moly.ts":[function(require,module,exports) {
+},{"./Character":"src/sprite/character/Character.ts"}],"src/utils/Environment.ts":[function(require,module,exports) {
+"use strict";
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Environment = void 0;
+
+var Environment = /*#__PURE__*/_createClass(function Environment() {
+  _classCallCheck(this, Environment);
+});
+
+exports.Environment = Environment;
+Environment.gravity = 0.5;
+},{}],"src/sprite/character/Moly.ts":[function(require,module,exports) {
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -89525,6 +89540,8 @@ exports.Moly = void 0;
 
 var ImageCharacter_1 = require("./ImageCharacter");
 
+var Environment_1 = require("../../utils/Environment");
+
 var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
   _inherits(Moly, _ImageCharacter_1$Ima);
 
@@ -89539,7 +89556,15 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
   _createClass(Moly, [{
     key: "jump",
     value: function jump() {
-      console.log("moly jumped");
+      console.log("jump");
+      this._jumpAcc = -10;
+    }
+  }, {
+    key: "move",
+    value: function move() {
+      this._pos.y += this._jumpAcc;
+      this._jumpAcc += Environment_1.Environment.gravity;
+      this._pos.y = this._p5.constrain(this._pos.y, 0, this._p5.height);
     }
   }]);
 
@@ -89547,7 +89572,7 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
 }(ImageCharacter_1.ImageCharacter);
 
 exports.Moly = Moly;
-},{"./ImageCharacter":"src/sprite/character/ImageCharacter.ts"}],"src/utils/Path.ts":[function(require,module,exports) {
+},{"./ImageCharacter":"src/sprite/character/ImageCharacter.ts","../../utils/Environment":"src/utils/Environment.ts"}],"src/utils/Path.ts":[function(require,module,exports) {
 "use strict";
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -89595,7 +89620,6 @@ var Moly_1 = require("./sprite/character/Moly");
 var Path_1 = require("./utils/Path");
 
 var sketch = function sketch(p5) {
-  // DEMO: Prepare an array of MyCircle instances
   var moly;
   var myCircles = [];
 
@@ -89603,10 +89627,9 @@ var sketch = function sketch(p5) {
     var canvasX = 500;
     var canvasY = 200;
     var canvas = p5.createCanvas(canvasX, canvasY);
-    var graundStartPos = p5.createVector(0, canvasY);
+    var graundStartPos = p5.createVector(5, canvasY - 20);
     p5.background("white");
     moly = new Moly_1.Moly(p5, p5.createVector(graundStartPos.x, graundStartPos.y), Path_1.Path.molyImg);
-    moly.jump();
 
     for (var i = 1; i < 4; i++) {
       var p = p5.width / 4;
@@ -89614,15 +89637,24 @@ var sketch = function sketch(p5) {
       var size = i % 2 !== 0 ? 40 : 32;
       myCircles.push(new MyCircle_1.default(p5, circlePos, size));
     }
-  }; // The sketch draw method
+  }; // p5.keyPressed();
 
 
   p5.draw = function () {
-    // DEMO: Let the circle instances draw themselves
+    p5.background(255);
     moly.draw();
+    moly.move();
     myCircles.forEach(function (circle) {
       return circle.draw();
     });
+  };
+
+  p5.keyPressed = function () {
+    if (p5.keyCode === p5.UP_ARROW) {
+      moly.jump();
+    } else if (p5.keyCode === p5.DOWN_ARROW) {
+      console.log("down arrow");
+    }
   };
 };
 
@@ -89655,7 +89687,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56483" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62287" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
