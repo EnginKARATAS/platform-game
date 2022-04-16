@@ -9,13 +9,14 @@ import { Moly } from "./sprite/character/Moly";
 import { Character } from "./sprite/character/Character";
 import { Path } from "./utils/Path";
 import { Platform } from "./sprite/platform/concrate/Platform";
+import { Environment } from "./utils/Environment";
 
 const sketch = (p5: P5) => {
   let moly: Moly;
   let platforms: Platform[] = [];
-  const myCircles: MyCircle[] = [];
+  const myCircles: [] = [];
 
-  p5.setup = () => {
+  p5.setup = () => {MyCircle
     let canvasX: number = 500;
     let canvasY: number = 200;
     const canvas = p5.createCanvas(canvasX, canvasY);
@@ -29,13 +30,16 @@ const sketch = (p5: P5) => {
       Path.molyImg
     );
 
-	for (let i = 0; i < 3; i++) {
-		const p = p5.width / 4;
-		const rectPos = p5.createVector(p * i, p5.height / 1.7);
-		const size = 40;
-		platforms.push(new Platform(p5, 10, 40, rectPos));
-	}
- 
+    for (let i = 0; i < 3; i++) {
+      const p = p5.width / 4;
+      const platformWidth = 40;
+      const platformHeight = 10;
+
+      const rectPos = p5.createVector(200* i, p5.height / 1.7);
+      const platformSize = p5.createVector(platformWidth, platformHeight);
+
+      platforms.push(new Platform(p5, platformSize, rectPos));
+    }
   };
   // p5.keyPressed();
   p5.draw = () => {
@@ -43,39 +47,44 @@ const sketch = (p5: P5) => {
     moly.draw();
     moly.move();
 
-	platforms.forEach((platform) => platform.draw());
+    platforms.forEach((platform) => platform.draw());
 
-	for (let i = platforms.length - 1; i > 0; i--) {
-		let isIntersect = moly.eat(moly._pos, platforms[i]._position);
-		if (isIntersect) {
-			console.log("intersect")
-		}
-  };
+    for (let i = 0; i < 3; i++) {
+      let isIntersect = moly.eat(
+        moly._pos,
+        platforms[i]._position,
+        platforms[i]._size
+      );
+      if (isIntersect) {
+		moly._jumpAcc = 0;
+      }
+    }
 
-  p5.keyPressed = () => {
-	if (p5.keyCode == p5.RIGHT_ARROW) {
-		moly._movingRight = true;
-		console.log("move right")
-	}
-	if (p5.keyCode == p5.LEFT_ARROW) {
-		moly._movingLeft = true;
-		console.log("move left")
-	}
-    if (p5.keyCode === p5.UP_ARROW) {
-      moly.jump();
-    } 
+    p5.keyPressed = () => {
+      if (p5.keyCode == p5.RIGHT_ARROW) {
+        moly._movingRight = true;
+        console.log("move right");
+      }
+      if (p5.keyCode == p5.LEFT_ARROW) {
+        moly._movingLeft = true;
+        console.log("move left");
+      }
+      if (p5.keyCode === p5.UP_ARROW) {
+        moly.jump();
+      }
+    };
+
+    p5.keyReleased = () => {
+      if (p5.keyCode == p5.RIGHT_ARROW) {
+        moly._movingRight = false;
+        console.log("stop right");
+      }
+      if (p5.keyCode == p5.LEFT_ARROW) {
+        moly._movingLeft = false;
+        console.log("stop left");
+      }
+    };
   };
-	
-  p5.keyReleased = () => {
-	if (p5.keyCode == p5.RIGHT_ARROW) {
-		moly._movingRight = false;
-		console.log("stop right")
-	}
-	if (p5.keyCode == p5.LEFT_ARROW) {
-		moly._movingLeft = false;
-		console.log("stop left")
-	}
-  }}
 };
 
 new P5(sketch);

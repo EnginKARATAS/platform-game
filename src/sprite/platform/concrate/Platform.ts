@@ -2,14 +2,12 @@ import p5, { Vector } from "p5";
 
 export class Platform{
     _p5: p5;
-    _width: number;
-    _height: number;
+    _size: Vector;
     _position: Vector;
     _color?: string;
-    constructor(p5: p5, width: number, height: number, position: Vector){
+    constructor(p5: p5, platformSize:Vector, position: Vector){
         this._p5 = p5;
-        this._width = width;
-        this._height = height;
+        this._size = platformSize;
         this._position = position;
     }
 
@@ -21,7 +19,7 @@ export class Platform{
 		p5.translate(this._position);
 		p5.noStroke();
 		p5.fill("blue");
-		p5.rect(75, 0, this._height, this._width);
+		p5.rect(0, 0, this._size.x, this._size.y);
 
 		p5.pop();
     }

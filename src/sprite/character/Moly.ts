@@ -7,15 +7,14 @@ export class Moly extends ImageCharacter implements Skill {
   constructor(p5: p5, position: Vector, imagePath: string) {
     super(p5, position, imagePath);
   }
-  eat(characterPos: p5.Vector, objPos: p5.Vector): boolean {
-    let distance = this._p5.dist(
-      characterPos.x,
-      characterPos.y,
-      objPos.x,
-      objPos.y
-    );
+  eat(characterPos: p5.Vector, objPos: p5.Vector, objSize: p5.Vector): boolean {
+    //A, B, C, D is diagonal of the rect object
+    let A = characterPos.x > objPos.x;
+    let B = characterPos.x < objPos.x + objSize.x;
+    let C = characterPos.y > objPos.y;
+    let D = characterPos.y < objPos.y + objSize.y;
 
-    if (distance >= 0 && distance < 30) return true;
+    if (A && B && C && D) return true;
     else return false;
   }
 
@@ -37,7 +36,7 @@ export class Moly extends ImageCharacter implements Skill {
     this.resetJumpIteratorCounter();
   }
   resetJumpIteratorCounter() {
-    if (this._jumpAcc % 10 == 0) {
+    if (this._jumpAcc % 1000 == 0) {
       this._jumpAcc = 0;
     }
   }
