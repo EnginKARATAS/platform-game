@@ -19,7 +19,7 @@ export class Character {
     this._movingLeft = false;
 
     this._pos = position;
-    this._size = 100;
+    this._size = 20;
     this._speed = new Vector();
     this._speed.x = 0;
     this._speed.y = 0;
@@ -41,6 +41,6 @@ export class Character {
     p5.ellipse(this._pos.x, this._pos.y, this._size);
 
     p5.pop();
-  }
+  } 
  
 }

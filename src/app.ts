@@ -8,18 +8,20 @@ import MyCircle from "./MyCircle";
 import { Moly } from "./sprite/character/Moly";
 import { Character } from "./sprite/character/Character";
 import { Path } from "./utils/Path";
+import { Platform } from "./sprite/platform/concrate/Platform";
 
 const sketch = (p5: P5) => {
   let moly: Moly;
+  let platforms: Platform[] = [];
   const myCircles: MyCircle[] = [];
 
   p5.setup = () => {
     let canvasX: number = 500;
     let canvasY: number = 200;
     const canvas = p5.createCanvas(canvasX, canvasY);
-    const graundStartPos = p5.createVector(5, canvasY - 20);
-
     p5.background("white");
+
+    const graundStartPos = p5.createVector(5, canvasY - 20);
 
     moly = new Moly(
       p5,
@@ -27,12 +29,13 @@ const sketch = (p5: P5) => {
       Path.molyImg
     );
 
-    for (let i = 1; i < 4; i++) {
-      const p = p5.width / 4;
-      const circlePos = p5.createVector(p * i, p5.height / 2);
-      const size = i % 2 !== 0 ? 40 : 32;
-      myCircles.push(new MyCircle(p5, circlePos, size));
-    }
+	for (let i = 0; i < 3; i++) {
+		const p = p5.width / 4;
+		const rectPos = p5.createVector(p * i, p5.height / 1.7);
+		const size = 40;
+		platforms.push(new Platform(p5, 10, 40, rectPos));
+	}
+ 
   };
   // p5.keyPressed();
   p5.draw = () => {
@@ -40,7 +43,13 @@ const sketch = (p5: P5) => {
     moly.draw();
     moly.move();
 
-    myCircles.forEach((circle) => circle.draw());
+	platforms.forEach((platform) => platform.draw());
+
+	for (let i = platforms.length - 1; i > 0; i--) {
+		let isIntersect = moly.eat(moly._pos, platforms[i]._position);
+		if (isIntersect) {
+			console.log("intersect")
+		}
   };
 
   p5.keyPressed = () => {
@@ -66,7 +75,7 @@ const sketch = (p5: P5) => {
 		moly._movingLeft = false;
 		console.log("stop left")
 	}
-  }
+  }}
 };
 
 new P5(sketch);

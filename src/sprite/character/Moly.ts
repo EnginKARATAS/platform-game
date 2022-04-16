@@ -7,17 +7,27 @@ export class Moly extends ImageCharacter implements Skill {
   constructor(p5: p5, position: Vector, imagePath: string) {
     super(p5, position, imagePath);
   }
+  eat(characterPos: p5.Vector, objPos: p5.Vector): boolean {
+    let distance = this._p5.dist(
+      characterPos.x,
+      characterPos.y,
+      objPos.x,
+      objPos.y
+    );
 
-   jump(): void {
-    this._jumpAcc = -10
+    if (distance >= 0 && distance < 30) return true;
+    else return false;
   }
-  move(): void {  
+
+  jump(): void {
+    this._jumpAcc = -10;
+  }
+  move(): void {
     if (this._movingRight) {
-        this._pos.x += 10;
-    }
-    else if (this._movingLeft) {
+      this._pos.x += 10;
+    } else if (this._movingLeft) {
       this._pos.x -= 10;
-  }
+    }
     this._pos.y += this._jumpAcc;
     this._jumpAcc += Environment.gravity;
     this._pos.y = this._p5.constrain(this._pos.y, 0, this._p5.height);
@@ -25,13 +35,10 @@ export class Moly extends ImageCharacter implements Skill {
 
     //provide memory leak
     this.resetJumpIteratorCounter();
-
   }
   resetJumpIteratorCounter() {
-    if (this._jumpAcc % 10 == 0 ) {
+    if (this._jumpAcc % 10 == 0) {
       this._jumpAcc = 0;
     }
   }
 }
-
-
