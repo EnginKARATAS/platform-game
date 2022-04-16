@@ -89398,6 +89398,8 @@ var Character = /*#__PURE__*/function () {
 
     this._p5 = p5;
     this._jumpAcc = -5;
+    this._movingRight = false;
+    this._movingLeft = false;
     this._pos = position;
     this._size = 100;
     this._speed = new p5_1.Vector();
@@ -89562,6 +89564,14 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
   }, {
     key: "move",
     value: function move() {
+      if (this._movingRight) {
+        this._pos.x += 10;
+      }
+
+      if (this._movingLeft) {
+        this._pos.x -= 10;
+      }
+
       this._pos.y += this._jumpAcc;
       this._jumpAcc += Environment_1.Environment.gravity;
       this._pos.y = this._p5.constrain(this._pos.y, 0, this._p5.height);
@@ -89650,10 +89660,30 @@ var sketch = function sketch(p5) {
   };
 
   p5.keyPressed = function () {
+    if (p5.keyCode == p5.RIGHT_ARROW) {
+      moly._movingRight = true;
+      console.log("move right");
+    }
+
+    if (p5.keyCode == p5.LEFT_ARROW) {
+      moly._movingLeft = true;
+      console.log("move left");
+    }
+
     if (p5.keyCode === p5.UP_ARROW) {
       moly.jump();
-    } else if (p5.keyCode === p5.DOWN_ARROW) {
-      console.log("down arrow");
+    }
+  };
+
+  p5.keyReleased = function () {
+    if (p5.keyCode == p5.RIGHT_ARROW) {
+      moly._movingRight = false;
+      console.log("stop right");
+    }
+
+    if (p5.keyCode == p5.LEFT_ARROW) {
+      moly._movingLeft = false;
+      console.log("stop left");
     }
   };
 };
@@ -89687,7 +89717,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62287" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61928" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

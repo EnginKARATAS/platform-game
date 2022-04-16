@@ -3,13 +3,21 @@ import { Vector } from "p5";
 
 export class Character {
   _p5: p5;
+  
   _jumpAcc: number;
+  _movingRight: boolean;
+  _movingLeft: boolean
+
   _pos: Vector;
   _speed: Vector;
   _size: number;
   constructor(p5: p5, position: Vector) {
     this._p5 = p5;
+
     this._jumpAcc = -5;
+    this._movingRight = false;
+    this._movingLeft = false;
+
     this._pos = position;
     this._size = 100;
     this._speed = new Vector();

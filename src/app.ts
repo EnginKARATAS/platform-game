@@ -10,7 +10,7 @@ import { Character } from "./sprite/character/Character";
 import { Path } from "./utils/Path";
 
 const sketch = (p5: P5) => {
-  let moly: Character;
+  let moly: Moly;
   const myCircles: MyCircle[] = [];
 
   p5.setup = () => {
@@ -44,12 +44,29 @@ const sketch = (p5: P5) => {
   };
 
   p5.keyPressed = () => {
+	if (p5.keyCode == p5.RIGHT_ARROW) {
+		moly._movingRight = true;
+		console.log("move right")
+	}
+	if (p5.keyCode == p5.LEFT_ARROW) {
+		moly._movingLeft = true;
+		console.log("move left")
+	}
     if (p5.keyCode === p5.UP_ARROW) {
       moly.jump();
-    } else if (p5.keyCode === p5.DOWN_ARROW) {
-      console.log("down arrow");
-    }
+    } 
   };
+	
+  p5.keyReleased = () => {
+	if (p5.keyCode == p5.RIGHT_ARROW) {
+		moly._movingRight = false;
+		console.log("stop right")
+	}
+	if (p5.keyCode == p5.LEFT_ARROW) {
+		moly._movingLeft = false;
+		console.log("stop left")
+	}
+  }
 };
 
 new P5(sketch);

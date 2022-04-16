@@ -8,12 +8,18 @@ export class Moly extends ImageCharacter implements Skill {
     super(p5, position, imagePath);
   }
 
-  public jump(): void {
+   jump(): void {
     console.log("jump")
     this._jumpAcc = -10
   }
 
   move(): void {  
+    if (this._movingRight) {
+        this._pos.x += 10;
+    }
+    if (this._movingLeft) {
+      this._pos.x -= 10;
+  }
     this._pos.y += this._jumpAcc;
     this._jumpAcc += Environment.gravity;
     this._pos.y = this._p5.constrain(this._pos.y, 0, this._p5.height);

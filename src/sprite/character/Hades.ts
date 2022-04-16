@@ -3,7 +3,7 @@ import { Character } from "./Character";
 import { Environment } from "../../utils/Environment";
 import { Skill } from "../abstract/Skill";
 
-export class Hades implements Skill extends Character  {
+export class Hades extends Character implements Skill {
   jump(): void {
     console.log("jump");
     this._jumpAcc = -10;
