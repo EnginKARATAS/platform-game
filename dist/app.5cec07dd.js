@@ -89561,7 +89561,6 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
   _createClass(Moly, [{
     key: "jump",
     value: function jump() {
-      console.log("jump");
       this._jumpAcc = -10;
     }
   }, {
@@ -89585,7 +89584,6 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
     value: function resetJumpIteratorCounter() {
       if (this._jumpAcc % 10 == 0) {
         this._jumpAcc = 0;
-        console.log("🚀 ~ file: Moly.ts ~ line 29 ~ Moly ~ move ~ this._jumpAcc", this._jumpAcc);
       }
     }
   }]);

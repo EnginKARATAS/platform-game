@@ -9,10 +9,8 @@ export class Moly extends ImageCharacter implements Skill {
   }
 
    jump(): void {
-    console.log("jump")
     this._jumpAcc = -10
   }
-
   move(): void {  
     if (this._movingRight) {
         this._pos.x += 10;
@@ -32,7 +30,6 @@ export class Moly extends ImageCharacter implements Skill {
   resetJumpIteratorCounter() {
     if (this._jumpAcc % 10 == 0 ) {
       this._jumpAcc = 0;
-      console.log("🚀 ~ file: Moly.ts ~ line 29 ~ Moly ~ move ~ this._jumpAcc", this._jumpAcc)
     }
   }
 }
