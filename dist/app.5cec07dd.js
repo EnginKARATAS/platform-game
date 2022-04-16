@@ -89504,12 +89504,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Environment = void 0;
 
-var Environment = /*#__PURE__*/_createClass(function Environment() {
+var Environment = /*#__PURE__*/_createClass(function Environment(p5) {
   _classCallCheck(this, Environment);
+
+  this._p5 = p5;
 });
 
 exports.Environment = Environment;
 Environment.gravity = 0.5;
+Environment.graund = 500;
 },{}],"src/sprite/character/Moly.ts":[function(require,module,exports) {
 "use strict";
 
@@ -89566,15 +89569,24 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
     value: function move() {
       if (this._movingRight) {
         this._pos.x += 10;
-      }
-
-      if (this._movingLeft) {
+      } else if (this._movingLeft) {
         this._pos.x -= 10;
       }
 
       this._pos.y += this._jumpAcc;
       this._jumpAcc += Environment_1.Environment.gravity;
       this._pos.y = this._p5.constrain(this._pos.y, 0, this._p5.height);
+      this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width); //provide memory leak
+
+      this.resetJumpIteratorCounter();
+    }
+  }, {
+    key: "resetJumpIteratorCounter",
+    value: function resetJumpIteratorCounter() {
+      if (this._jumpAcc % 10 == 0) {
+        this._jumpAcc = 0;
+        console.log("🚀 ~ file: Moly.ts ~ line 29 ~ Moly ~ move ~ this._jumpAcc", this._jumpAcc);
+      }
     }
   }]);
 
