@@ -9,7 +9,6 @@ export class Hades extends Character implements Skill {
       throw new Error("Method not implemented.");
   }
   jump(): void {
-    console.log("jump");
     this._jumpAcc = -10;
   }
 

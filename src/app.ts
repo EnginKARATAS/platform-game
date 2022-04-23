@@ -60,11 +60,9 @@ const sketch = (p5: P5) => {
     p5.keyPressed = () => {
       if (p5.keyCode == p5.RIGHT_ARROW) {
         moly._movingRight = true;
-        console.log("move right");
       }
       if (p5.keyCode == p5.LEFT_ARROW) {
         moly._movingLeft = true;
-        console.log("move left");
       }
       if (p5.keyCode === p5.UP_ARROW) {
         moly.jump();
@@ -74,11 +72,9 @@ const sketch = (p5: P5) => {
     p5.keyReleased = () => {
       if (p5.keyCode == p5.RIGHT_ARROW) {
         moly._movingRight = false;
-        console.log("stop right");
       }
       if (p5.keyCode == p5.LEFT_ARROW) {
         moly._movingLeft = false;
-        console.log("stop left");
       }
     };
   };

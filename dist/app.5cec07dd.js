@@ -89756,12 +89756,10 @@ var sketch = function sketch(p5) {
     p5.keyPressed = function () {
       if (p5.keyCode == p5.RIGHT_ARROW) {
         moly._movingRight = true;
-        console.log("move right");
       }
 
       if (p5.keyCode == p5.LEFT_ARROW) {
         moly._movingLeft = true;
-        console.log("move left");
       }
 
       if (p5.keyCode === p5.UP_ARROW) {
@@ -89772,12 +89770,10 @@ var sketch = function sketch(p5) {
     p5.keyReleased = function () {
       if (p5.keyCode == p5.RIGHT_ARROW) {
         moly._movingRight = false;
-        console.log("stop right");
       }
 
       if (p5.keyCode == p5.LEFT_ARROW) {
         moly._movingLeft = false;
-        console.log("stop left");
       }
     };
   };
