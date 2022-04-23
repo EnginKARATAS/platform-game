@@ -89559,14 +89559,9 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
   }
 
   _createClass(Moly, [{
-    key: "eat",
-    value: function eat(characterPos, objPos, objSize) {
-      //A, B, C, D is diagonal of the rect object
-      var A = characterPos.x > objPos.x;
-      var B = characterPos.x < objPos.x + objSize.x;
-      var C = characterPos.y > objPos.y;
-      var D = characterPos.y < objPos.y + objSize.y;
-      if (A && B && C && D) return true;else return false;
+    key: "getPos",
+    value: function getPos() {
+      return this._pos;
     }
   }, {
     key: "jump",
@@ -89646,6 +89641,16 @@ var Platform = /*#__PURE__*/function () {
   }
 
   _createClass(Platform, [{
+    key: "intersect",
+    value: function intersect(characterPos, objPos, objSize) {
+      //A, B, C, D is diagonal of the rect object
+      var A = characterPos.getPos().x > objPos.x;
+      var B = characterPos.getPos().x < objPos.x + objSize.x;
+      var C = characterPos.getPos().y > objPos.y;
+      var D = characterPos.getPos().y < objPos.y + objSize.y;
+      if (A && B && C && D) return true;else return false;
+    }
+  }, {
     key: "draw",
     value: function draw() {
       var p5 = this._p5; // just for convenience
@@ -89726,7 +89731,7 @@ var sketch = function sketch(p5) {
     });
 
     for (var i = 0; i < 3; i++) {
-      var isIntersect = moly.eat(moly._pos, platforms[i]._position, platforms[i]._size);
+      var isIntersect = platforms[i].intersect(moly, platforms[i]._position, platforms[i]._size);
 
       if (isIntersect) {
         moly._jumpAcc = 0;
@@ -89792,7 +89797,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61928" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59529" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

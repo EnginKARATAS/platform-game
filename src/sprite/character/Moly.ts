@@ -7,17 +7,10 @@ export class Moly extends ImageCharacter implements Skill {
   constructor(p5: p5, position: Vector, imagePath: string) {
     super(p5, position, imagePath);
   }
-  eat(characterPos: p5.Vector, objPos: p5.Vector, objSize: p5.Vector): boolean {
-    //A, B, C, D is diagonal of the rect object
-    let A = characterPos.x > objPos.x;
-    let B = characterPos.x < objPos.x + objSize.x;
-    let C = characterPos.y > objPos.y;
-    let D = characterPos.y < objPos.y + objSize.y;
-
-    if (A && B && C && D) return true;
-    else return false;
+  getPos(): p5.Vector {
+    return this._pos;
   }
-
+  
   jump(): void {
     this._jumpAcc = -10;
   }

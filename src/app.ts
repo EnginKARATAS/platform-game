@@ -16,7 +16,8 @@ const sketch = (p5: P5) => {
   let platforms: Platform[] = [];
   const myCircles: [] = [];
 
-  p5.setup = () => {MyCircle
+  p5.setup = () => {
+    MyCircle;
     let canvasX: number = 500;
     let canvasY: number = 200;
     const canvas = p5.createCanvas(canvasX, canvasY);
@@ -35,7 +36,7 @@ const sketch = (p5: P5) => {
       const platformWidth = 40;
       const platformHeight = 10;
 
-      const rectPos = p5.createVector(200* i, p5.height / 1.7);
+      const rectPos = p5.createVector(200 * i, p5.height / 1.7);
       const platformSize = p5.createVector(platformWidth, platformHeight);
 
       platforms.push(new Platform(p5, platformSize, rectPos));
@@ -50,13 +51,13 @@ const sketch = (p5: P5) => {
     platforms.forEach((platform) => platform.draw());
 
     for (let i = 0; i < 3; i++) {
-      let isIntersect = moly.eat(
-        moly._pos,
+      let isIntersect = platforms[i].intersect(
+        moly,
         platforms[i]._position,
         platforms[i]._size
       );
       if (isIntersect) {
-		moly._jumpAcc = 0;
+        moly._jumpAcc = 0;
       }
     }
 
