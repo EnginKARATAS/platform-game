@@ -89369,7 +89369,7 @@ var Character = /*#__PURE__*/function () {
 
   _createClass(Character, [{
     key: "getPos",
-    get: function get() {
+    value: function getPos() {
       return this._pos;
     }
   }, {
@@ -89633,6 +89633,57 @@ var Platform = /*#__PURE__*/function () {
 }();
 
 exports.Platform = Platform;
+},{}],"src/utils/physics/concrate/IntersectManager.ts":[function(require,module,exports) {
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.IntersectManager = void 0;
+
+var IntersectManager = /*#__PURE__*/function () {
+  function IntersectManager() {
+    _classCallCheck(this, IntersectManager);
+  }
+
+  _createClass(IntersectManager, [{
+    key: "intersectTwoObj",
+    value: function intersectTwoObj(obj1, obj2) {
+      //A, B, C, D is diagonal of the rect object
+      var A = obj1.getPos().x > obj2.getPos().x;
+      var B = obj1.getPos().x < obj2.getPos().x + obj2.getSize().x;
+      var C = obj1.getPos().y > obj2.getPos().y;
+      var D = obj1.getPos().y < obj2.getPos().y + obj2.getSize().y;
+
+      if (A && B && C && D) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: "intersectOneToManyObj",
+    value: function intersectOneToManyObj(obj1, obj2) {
+      for (var i = 0; i < obj2.length; i++) {
+        if (this.intersectTwoObj(obj1, obj2[i])) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+  }]);
+
+  return IntersectManager;
+}();
+
+exports.IntersectManager = IntersectManager;
 },{}],"src/app.ts":[function(require,module,exports) {
 "use strict";
 
@@ -89659,10 +89710,13 @@ var Path_1 = require("./utils/Path");
 
 var Platform_1 = require("./sprite/platform/concrate/Platform");
 
+var IntersectManager_1 = require("./utils/physics/concrate/IntersectManager");
+
 var sketch = function sketch(p5) {
   var moly;
   var platforms = [];
   var myCircles = [];
+  var intersectManager;
 
   p5.setup = function () {
     var canvasX = 500;
@@ -89672,14 +89726,16 @@ var sketch = function sketch(p5) {
     var graundStartPos = p5.createVector(5, canvasY - 20);
     moly = new Moly_1.Moly(p5, p5.createVector(graundStartPos.x, graundStartPos.y), Path_1.Path.molyImg);
 
-    for (var _i = 0; _i < 3; _i++) {
+    for (var i = 0; i < 3; i++) {
       var p = p5.width / 4;
       var platformWidth = 40;
       var platformHeight = 10;
-      var rectPos = p5.createVector(200 * _i, p5.height / 1.7);
+      var rectPos = p5.createVector(200 * i, p5.height / 1.7);
       var platformSize = p5.createVector(platformWidth, platformHeight);
       platforms.push(new Platform_1.Platform(p5, platformSize, rectPos));
     }
+
+    intersectManager = new IntersectManager_1.IntersectManager();
   }; // p5.keyPressed();
 
 
@@ -89687,48 +89743,49 @@ var sketch = function sketch(p5) {
     p5.background(255);
     moly.draw();
     moly.move();
+    var intersect = intersectManager.intersectOneToManyObj(moly, platforms);
+
+    if (intersect) {
+      moly._jumpAcc = 0;
+    }
+
     platforms.forEach(function (platform) {
       return platform.draw();
     });
-    var isIntersect = platforms[i].intersect(moly, platforms[i]._position, platforms[i]._size);
 
-    if (isIntersect) {
-      moly._jumpAcc = 0;
-    }
+    p5.keyPressed = function () {
+      if (p5.keyCode == p5.RIGHT_ARROW) {
+        moly._movingRight = true;
+        console.log("move right");
+      }
+
+      if (p5.keyCode == p5.LEFT_ARROW) {
+        moly._movingLeft = true;
+        console.log("move left");
+      }
+
+      if (p5.keyCode === p5.UP_ARROW) {
+        moly.jump();
+      }
+    };
+
+    p5.keyReleased = function () {
+      if (p5.keyCode == p5.RIGHT_ARROW) {
+        moly._movingRight = false;
+        console.log("stop right");
+      }
+
+      if (p5.keyCode == p5.LEFT_ARROW) {
+        moly._movingLeft = false;
+        console.log("stop left");
+      }
+    };
   };
+}; // end of sketch
 
-  p5.keyPressed = function () {
-    if (p5.keyCode == p5.RIGHT_ARROW) {
-      moly._movingRight = true;
-      console.log("move right");
-    }
 
-    if (p5.keyCode == p5.LEFT_ARROW) {
-      moly._movingLeft = true;
-      console.log("move left");
-    }
-
-    if (p5.keyCode === p5.UP_ARROW) {
-      moly.jump();
-    }
-  };
-
-  p5.keyReleased = function () {
-    if (p5.keyCode == p5.RIGHT_ARROW) {
-      moly._movingRight = false;
-      console.log("stop right");
-    }
-
-    if (p5.keyCode == p5.LEFT_ARROW) {
-      moly._movingLeft = false;
-      console.log("stop left");
-    }
-  };
-};
-
-;
 new p5_1.default(sketch);
-},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./sprite/character/Moly":"src/sprite/character/Moly.ts","./utils/Path":"src/utils/Path.ts","./sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./sprite/character/Moly":"src/sprite/character/Moly.ts","./utils/Path":"src/utils/Path.ts","./sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts","./utils/physics/concrate/IntersectManager":"src/utils/physics/concrate/IntersectManager.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -89756,7 +89813,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59529" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60142" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

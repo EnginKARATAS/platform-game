@@ -10,14 +10,14 @@ import { Character } from "./sprite/character/Character";
 import { Path } from "./utils/Path";
 import { Platform } from "./sprite/platform/concrate/Platform";
 import { Environment } from "./utils/Environment";
+import { IntersectManager } from "./utils/physics/concrate/IntersectManager";
 
 const sketch = (p5: P5) => {
   let moly: Moly;
   let platforms: Platform[] = [];
   const myCircles: [] = [];
-
+  let intersectManager: IntersectManager;
   p5.setup = () => {
-    MyCircle;
     let canvasX: number = 500;
     let canvasY: number = 200;
     const canvas = p5.createCanvas(canvasX, canvasY);
@@ -41,6 +41,8 @@ const sketch = (p5: P5) => {
 
       platforms.push(new Platform(p5, platformSize, rectPos));
     }
+
+    intersectManager = new IntersectManager();
   };
   // p5.keyPressed();
   p5.draw = () => {
@@ -48,18 +50,12 @@ const sketch = (p5: P5) => {
     moly.draw();
     moly.move();
 
-    platforms.forEach((platform) => platform.draw());
-
-    for (let i = 0; i < 3; i++) {
-      let isIntersect = platforms[i].intersect(
-        moly,
-        platforms[i]._position,
-        platforms[i]._size
-      );
-      if (isIntersect) {
-        moly._jumpAcc = 0;
-      }
+    let intersect = intersectManager.intersectOneToManyObj(moly, platforms);
+    if (intersect) {
+      moly._jumpAcc = 0;
     }
+
+    platforms.forEach((platform) => platform.draw());
 
     p5.keyPressed = () => {
       if (p5.keyCode == p5.RIGHT_ARROW) {
@@ -86,6 +82,5 @@ const sketch = (p5: P5) => {
       }
     };
   };
-};
-
+}; // end of sketch
 new P5(sketch);
