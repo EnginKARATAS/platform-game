@@ -50,10 +50,8 @@ const sketch = (p5: P5) => {
     moly.draw();
     moly.move();
 
-    let intersect = intersectManager.intersectOneToManyObj(moly, platforms);
-    if (intersect) {
-      moly._jumpAcc = 0;
-    }
+    intersectManager.intersectOneToManyObj(moly, platforms);
+  
 
     platforms.forEach((platform) => platform.draw());
 

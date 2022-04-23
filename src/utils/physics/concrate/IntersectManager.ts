@@ -13,13 +13,13 @@ export class IntersectManager implements Intersectable {
     if (A && B && C && D) {
       return true;
     } else {
-        return false;
+      return false;
     }
   }
   intersectOneToManyObj(obj1: Character, obj2: Platform[]): boolean {
     for (let i = 0; i < obj2.length; i++) {
       if (this.intersectTwoObj(obj1, obj2[i])) {
-        return true;
+        obj1._jumpAcc = 0;
       }
     }
     return false;

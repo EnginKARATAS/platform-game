@@ -89519,6 +89519,12 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
   }
 
   _createClass(Moly, [{
+    key: "render",
+    value: function render() {
+      this.draw();
+      this.move();
+    }
+  }, {
     key: "jump",
     value: function jump() {
       this._jumpAcc = -10;
@@ -89527,12 +89533,13 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
     key: "move",
     value: function move() {
       if (this._movingRight) {
-        this._pos.x += 10;
+        this._pos.add(10, 0);
       } else if (this._movingLeft) {
         this._pos.x -= 10;
       }
 
-      this._pos.y += this._jumpAcc;
+      this._pos.add(0, this._jumpAcc);
+
       this._jumpAcc += Environment_1.Environment.gravity;
       this._pos.y = this._p5.constrain(this._pos.y, 0, this._p5.height);
       this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width); //provide memory leak
@@ -89672,7 +89679,7 @@ var IntersectManager = /*#__PURE__*/function () {
     value: function intersectOneToManyObj(obj1, obj2) {
       for (var i = 0; i < obj2.length; i++) {
         if (this.intersectTwoObj(obj1, obj2[i])) {
-          return true;
+          obj1._jumpAcc = 0;
         }
       }
 
@@ -89743,12 +89750,7 @@ var sketch = function sketch(p5) {
     p5.background(255);
     moly.draw();
     moly.move();
-    var intersect = intersectManager.intersectOneToManyObj(moly, platforms);
-
-    if (intersect) {
-      moly._jumpAcc = 0;
-    }
-
+    intersectManager.intersectOneToManyObj(moly, platforms);
     platforms.forEach(function (platform) {
       return platform.draw();
     });
