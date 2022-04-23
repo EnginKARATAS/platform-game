@@ -89336,47 +89336,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/MyCircle.ts":[function(require,module,exports) {
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var MyCircle = /*#__PURE__*/function () {
-  function MyCircle(p5, atPosition, size) {
-    _classCallCheck(this, MyCircle);
-
-    this._p5 = p5;
-    this._pos = atPosition;
-    this._size = size;
-  }
-
-  _createClass(MyCircle, [{
-    key: "draw",
-    value: function draw() {
-      var p5 = this._p5; // just for convenience
-
-      p5.push();
-      p5.translate(this._pos);
-      p5.noStroke();
-      p5.fill("orange");
-      p5.ellipse(0, 0, this._size);
-      p5.pop();
-    }
-  }]);
-
-  return MyCircle;
-}();
-
-exports.default = MyCircle;
-},{}],"src/sprite/character/Character.ts":[function(require,module,exports) {
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/sprite/character/Character.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -89408,7 +89368,7 @@ var Character = /*#__PURE__*/function () {
   }
 
   _createClass(Character, [{
-    key: "pos",
+    key: "getPos",
     get: function get() {
       return this._pos;
     }
@@ -89559,11 +89519,6 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
   }
 
   _createClass(Moly, [{
-    key: "getPos",
-    value: function getPos() {
-      return this._pos;
-    }
-  }, {
     key: "jump",
     value: function jump() {
       this._jumpAcc = -10;
@@ -89641,6 +89596,16 @@ var Platform = /*#__PURE__*/function () {
   }
 
   _createClass(Platform, [{
+    key: "getPos",
+    value: function getPos() {
+      return this._position;
+    }
+  }, {
+    key: "getSize",
+    value: function getSize() {
+      return this._size;
+    }
+  }, {
     key: "intersect",
     value: function intersect(characterPos, objPos, objSize) {
       //A, B, C, D is diagonal of the rect object
@@ -89686,10 +89651,7 @@ var p5_1 = __importDefault(require("p5"));
 require("p5/lib/addons/p5.dom"); // import "p5/lib/addons/p5.sound";	// Include if needed
 
 
-require("./styles.scss"); // DEMO: A sample class implementation
-
-
-var MyCircle_1 = __importDefault(require("./MyCircle"));
+require("./styles.scss");
 
 var Moly_1 = require("./sprite/character/Moly");
 
@@ -89703,7 +89665,6 @@ var sketch = function sketch(p5) {
   var myCircles = [];
 
   p5.setup = function () {
-    MyCircle_1.default;
     var canvasX = 500;
     var canvasY = 200;
     var canvas = p5.createCanvas(canvasX, canvasY);
@@ -89711,11 +89672,11 @@ var sketch = function sketch(p5) {
     var graundStartPos = p5.createVector(5, canvasY - 20);
     moly = new Moly_1.Moly(p5, p5.createVector(graundStartPos.x, graundStartPos.y), Path_1.Path.molyImg);
 
-    for (var i = 0; i < 3; i++) {
+    for (var _i = 0; _i < 3; _i++) {
       var p = p5.width / 4;
       var platformWidth = 40;
       var platformHeight = 10;
-      var rectPos = p5.createVector(200 * i, p5.height / 1.7);
+      var rectPos = p5.createVector(200 * _i, p5.height / 1.7);
       var platformSize = p5.createVector(platformWidth, platformHeight);
       platforms.push(new Platform_1.Platform(p5, platformSize, rectPos));
     }
@@ -89729,47 +89690,45 @@ var sketch = function sketch(p5) {
     platforms.forEach(function (platform) {
       return platform.draw();
     });
+    var isIntersect = platforms[i].intersect(moly, platforms[i]._position, platforms[i]._size);
 
-    for (var i = 0; i < 3; i++) {
-      var isIntersect = platforms[i].intersect(moly, platforms[i]._position, platforms[i]._size);
+    if (isIntersect) {
+      moly._jumpAcc = 0;
+    }
+  };
 
-      if (isIntersect) {
-        moly._jumpAcc = 0;
-      }
+  p5.keyPressed = function () {
+    if (p5.keyCode == p5.RIGHT_ARROW) {
+      moly._movingRight = true;
+      console.log("move right");
     }
 
-    p5.keyPressed = function () {
-      if (p5.keyCode == p5.RIGHT_ARROW) {
-        moly._movingRight = true;
-        console.log("move right");
-      }
+    if (p5.keyCode == p5.LEFT_ARROW) {
+      moly._movingLeft = true;
+      console.log("move left");
+    }
 
-      if (p5.keyCode == p5.LEFT_ARROW) {
-        moly._movingLeft = true;
-        console.log("move left");
-      }
+    if (p5.keyCode === p5.UP_ARROW) {
+      moly.jump();
+    }
+  };
 
-      if (p5.keyCode === p5.UP_ARROW) {
-        moly.jump();
-      }
-    };
+  p5.keyReleased = function () {
+    if (p5.keyCode == p5.RIGHT_ARROW) {
+      moly._movingRight = false;
+      console.log("stop right");
+    }
 
-    p5.keyReleased = function () {
-      if (p5.keyCode == p5.RIGHT_ARROW) {
-        moly._movingRight = false;
-        console.log("stop right");
-      }
-
-      if (p5.keyCode == p5.LEFT_ARROW) {
-        moly._movingLeft = false;
-        console.log("stop left");
-      }
-    };
+    if (p5.keyCode == p5.LEFT_ARROW) {
+      moly._movingLeft = false;
+      console.log("stop left");
+    }
   };
 };
 
+;
 new p5_1.default(sketch);
-},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./MyCircle":"src/MyCircle.ts","./sprite/character/Moly":"src/sprite/character/Moly.ts","./utils/Path":"src/utils/Path.ts","./sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./sprite/character/Moly":"src/sprite/character/Moly.ts","./utils/Path":"src/utils/Path.ts","./sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

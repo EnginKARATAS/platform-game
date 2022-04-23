@@ -25,7 +25,7 @@ export class Character {
     this._speed.y = 0;
   }
 
-  get pos(): Vector {
+  get getPos(): Vector {
     return this._pos;
   }
 

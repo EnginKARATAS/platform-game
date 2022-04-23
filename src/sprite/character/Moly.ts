@@ -7,10 +7,7 @@ export class Moly extends ImageCharacter implements Skill {
   constructor(p5: p5, position: Vector, imagePath: string) {
     super(p5, position, imagePath);
   }
-  getPos(): p5.Vector {
-    return this._pos;
-  }
-  
+
   jump(): void {
     this._jumpAcc = -10;
   }
