@@ -27,12 +27,11 @@ const sketch = (p5: P5) => {
 
     moly = new Moly(
       p5,
-      p5.createVector(graundStartPos.x, graundStartPos.y),
+      p5.createVector(graundStartPos.x + 200, graundStartPos.y),
       Path.molyImg
     );
 
     for (let i = 0; i < 3; i++) {
-      const p = p5.width / 4;
       const platformWidth = 40;
       const platformHeight = 10;
 
@@ -52,7 +51,6 @@ const sketch = (p5: P5) => {
 
     intersectManager.intersectOneToManyObj(moly, platforms);
   
-
     platforms.forEach((platform) => platform.draw());
 
     p5.keyPressed = () => {

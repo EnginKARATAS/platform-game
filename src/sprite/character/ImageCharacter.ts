@@ -1,8 +1,7 @@
 import p5, { Image, Vector } from "p5";
 import { Character } from "./Character";
 
-export class ImageCharacter extends Character{
-    _p5: p5;
+export abstract class ImageCharacter extends Character{
     _image?:Image;
     imagePath: string;
     

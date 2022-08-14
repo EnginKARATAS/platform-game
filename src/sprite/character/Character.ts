@@ -1,16 +1,16 @@
 import p5 from "p5";
 import { Vector } from "p5";
 
-export class Character {
+export abstract class Character {
   _p5: p5;
-  
-  _jumpAcc: number;
-  _movingRight: boolean;
-  _movingLeft: boolean
 
-  _pos: Vector;
-  _speed: Vector;
-  _size: number;
+  protected _jumpAcc: number;
+  protected _movingRight: boolean;
+  protected _movingLeft: boolean;
+
+  protected _pos: Vector;
+  protected _speed: Vector;
+  protected _size: number;
   constructor(p5: p5, position: Vector) {
     this._p5 = p5;
 
@@ -41,6 +41,5 @@ export class Character {
     p5.ellipse(this._pos.x, this._pos.y, this._size);
 
     p5.pop();
-  } 
- 
+  }
 }

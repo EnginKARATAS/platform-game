@@ -89731,10 +89731,9 @@ var sketch = function sketch(p5) {
     var canvas = p5.createCanvas(canvasX, canvasY);
     p5.background("white");
     var graundStartPos = p5.createVector(5, canvasY - 20);
-    moly = new Moly_1.Moly(p5, p5.createVector(graundStartPos.x, graundStartPos.y), Path_1.Path.molyImg);
+    moly = new Moly_1.Moly(p5, p5.createVector(graundStartPos.x + 200, graundStartPos.y), Path_1.Path.molyImg);
 
     for (var i = 0; i < 3; i++) {
-      var p = p5.width / 4;
       var platformWidth = 40;
       var platformHeight = 10;
       var rectPos = p5.createVector(200 * i, p5.height / 1.7);
@@ -89811,7 +89810,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60142" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59962" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
