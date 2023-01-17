@@ -2,22 +2,20 @@ import P5, { Vector } from "p5";
 import "p5/lib/addons/p5.dom";
 // import "p5/lib/addons/p5.sound";	// Include if needed
 import "./styles.scss";
-
-// DEMO: A sample class implementation
-import MyCircle from "./MyCircle";
 import { Moly } from "./sprite/character/Moly";
-import { Character } from "./sprite/character/Character";
 import { Path } from "./utils/Path";
 import { Platform } from "./sprite/platform/concrate/Platform";
-import { Environment } from "./utils/Environment";
 import { IntersectManager } from "./utils/physics/concrate/IntersectManager";
-
+import DataStore from "./providers/DataStore";
 const sketch = (p5: P5) => {
   let moly: Moly;
-  let platforms: Platform[] = [];
-  const myCircles: [] = [];
   let intersectManager: IntersectManager;
+  let dataStore: DataStore;
   p5.setup = () => {
+    intersectManager = new IntersectManager();
+    dataStore = DataStore.getInstance();
+    dataStore.setArray("platforms", []);
+
     let canvasX: number = 500;
     let canvasY: number = 200;
     const canvas = p5.createCanvas(canvasX, canvasY);
@@ -38,10 +36,8 @@ const sketch = (p5: P5) => {
       const rectPos = p5.createVector(200 * i, p5.height / 1.7);
       const platformSize = p5.createVector(platformWidth, platformHeight);
 
-      platforms.push(new Platform(p5, platformSize, rectPos));
+      dataStore.pushItem("platforms", new Platform(p5, platformSize, rectPos));
     }
-
-    intersectManager = new IntersectManager();
   };
   // p5.keyPressed();
   p5.draw = () => {
@@ -49,10 +45,13 @@ const sketch = (p5: P5) => {
     moly.draw();
     moly.move();
 
-    intersectManager.intersectOneToManyObj(moly, platforms);
-  
-    platforms.forEach((platform) => platform.draw());
+    intersectManager.intersectOneToManyObj(
+      moly,
+      dataStore.getArray("platforms")
+    );
 
+    let platformsArr = dataStore.getArray("platforms");
+    platformsArr.forEach((platform) => platform.draw());
     p5.keyPressed = () => {
       if (p5.keyCode == p5.RIGHT_ARROW) {
         moly._movingRight = true;

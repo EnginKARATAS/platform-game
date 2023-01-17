@@ -1,16 +1,18 @@
 import p5 from "p5";
 import { Vector } from "p5";
+import { Intersectable } from "../../utils/physics/abstract/intersectable";
+import { Platform } from "../platform/concrate/Platform";
 
-export abstract class Character {
+export abstract class Character implements Intersectable {
   _p5: p5;
 
-  protected _jumpAcc: number;
-  protected _movingRight: boolean;
-  protected _movingLeft: boolean;
+  public _jumpAcc: number;
+  public _movingRight: boolean;
+  public _movingLeft: boolean;
 
-  protected _pos: Vector;
-  protected _speed: Vector;
-  protected _size: number;
+  public _pos: Vector;
+  public _speed: Vector;
+  public _size: number;
   constructor(p5: p5, position: Vector) {
     this._p5 = p5;
 
@@ -23,6 +25,12 @@ export abstract class Character {
     this._speed = new Vector();
     this._speed.x = 0;
     this._speed.y = 0;
+  }
+  intersectTwoObj(obj1: Character, obj2: Platform): boolean {
+    throw new Error("Method not implemented.");
+  }
+  intersectOneToManyObj(obj1: Character, obj2: Platform[]): boolean {
+    throw new Error("Method not implemented.");
   }
 
   getPos(): Vector {
