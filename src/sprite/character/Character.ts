@@ -11,9 +11,9 @@ export abstract class Character implements Intersectable {
   public _movingLeft: boolean;
 
   public _pos: Vector;
-  public _speed: Vector;
+  public _speed: number;
   public _size: number;
-  constructor(p5: p5, position: Vector) {
+  constructor(p5: p5, position: Vector, speed: number = 2) {
     this._p5 = p5;
 
     this._jumpAcc = -5;
@@ -21,10 +21,8 @@ export abstract class Character implements Intersectable {
     this._movingLeft = false;
 
     this._pos = position;
-    this._size = 20;
-    this._speed = new Vector();
-    this._speed.x = 0;
-    this._speed.y = 0;
+    this._size = 5;
+    this._speed = speed;
   }
   intersectTwoObj(obj1: Character, obj2: Platform): boolean {
     throw new Error("Method not implemented.");
