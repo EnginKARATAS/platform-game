@@ -1,24 +1,26 @@
 import P5, { Vector } from "p5";
 import "p5/lib/addons/p5.dom";
-// import "p5/lib/addons/p5.sound";	// Include if needed
 import "./styles.scss";
-
-// DEMO: A sample class implementation
-import MyCircle from "./MyCircle";
 import { Moly } from "./sprite/character/Moly";
-import { Character } from "./sprite/character/Character";
 import { Path } from "./utils/Path";
 import { Platform } from "./sprite/platform/concrate/Platform";
-import { Environment } from "./utils/Environment";
 import { IntersectManager } from "./utils/physics/concrate/IntersectManager";
 import { Ground } from "./sprite/ground/concrate/ground";
+import { CreateObj } from "./utils/physics/concrate/CreateObj";
+import DataStore from "./providers/DataStore";
 
 const sketch = (p5: P5) => {
+  let dataStore: DataStore;
+
+  let createObj: CreateObj = new CreateObj(p5);
   let moly: Moly;
-  let platforms: Platform[] = [];
   let ground: Ground;
   let intersectManager: IntersectManager;
   p5.setup = () => {
+    intersectManager = new IntersectManager();
+    dataStore = DataStore.getInstance();
+    dataStore.setArray("platforms", []);
+
     let canvasX: number = 500;
     let canvasY: number = 200;
     const canvas = p5.createCanvas(canvasX, canvasY);
@@ -28,7 +30,7 @@ const sketch = (p5: P5) => {
 
     moly = new Moly(
       p5,
-      p5.createVector(graundStartPos.x + 40, graundStartPos.y - 50),
+      p5.createVector(graundStartPos.x + 80, graundStartPos.y - 40),
       Path.molyImg
     );
 
@@ -36,31 +38,38 @@ const sketch = (p5: P5) => {
       const platformWidth = 40;
       const platformHeight = 10;
 
-      const rectPos = p5.createVector(200 * i, p5.height / 1.7);
+      const rectPos = p5.createVector(200 * i + 30, p5.height / 1.7);
       const platformSize = p5.createVector(platformWidth, platformHeight);
 
-      platforms.push(new Platform(p5, platformSize, rectPos));
+      dataStore.pushItem("platforms", new Platform(p5, platformSize, rectPos));
     }
 
     const rectPos = p5.createVector(0, p5.height - 10);
     const platformSize = p5.createVector(p5.width, 10);
 
-    platforms.push(new Ground(p5, platformSize, rectPos));
+    ground = new Ground(p5, platformSize, rectPos);
 
     intersectManager = new IntersectManager();
   };
-  // p5.keyPressed();
   p5.draw = () => {
-    p5.background(255);
-    p5.scale(2);
+    p5.background(170);
 
+    p5.scale(2);
     p5.translate(-moly.getPos().x * 0.95 + 100, -100);
+
     moly.draw();
     moly.move();
+    ground.draw();
+    // p5.rect(0, 0, 200, 140);
+    intersectManager.intersectOneToManyObj(
+      moly,
+      dataStore.getArray("platforms")
+    );
 
-    intersectManager.intersectOneToManyObj(moly, platforms);
+    createObj.createPlatform(moly);
 
-    platforms.forEach((platform) => platform.draw());
+    let platformsArr = dataStore.getArray("platforms");
+    platformsArr.forEach((platform) => platform.draw());
 
     p5.keyPressed = () => {
       if (p5.keyCode == p5.RIGHT_ARROW) {

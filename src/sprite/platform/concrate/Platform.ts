@@ -35,14 +35,8 @@ export class Platform {
 
   draw() {
     const p5 = this._p5; // just for convenience
-
-    p5.push();
-
-    p5.translate(this._position);
     p5.noStroke();
-    p5.fill("blue");
-    p5.rect(0, 0, this._size.x, this._size.y);
-
-    p5.pop();
+    p5.fill("red");
+    p5.rect(this._position.x, this._position.y, this._size.x, this._size.y);
   }
 }

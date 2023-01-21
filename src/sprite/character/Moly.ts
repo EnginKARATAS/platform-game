@@ -15,7 +15,7 @@ export class Moly extends ImageCharacter implements Skill {
   }
 
   jump(): void {
-    this._jumpAcc = -10;
+    this._jumpAcc = -this._jumpMagnitude;
   }
   move(): void {
     if (this._movingRight) {
@@ -31,7 +31,7 @@ export class Moly extends ImageCharacter implements Skill {
       0,
       this._p5.height - this._size / 2 - 9
     );
-    this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width);
+    // this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width);
 
     //provide memory leak
     this.resetJumpIteratorCounter();

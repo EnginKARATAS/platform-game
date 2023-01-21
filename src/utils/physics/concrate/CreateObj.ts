@@ -1,8 +1,8 @@
 import p5, { Vector } from "p5";
-import DataStore from "../../../providers/DataStore";
 import { Character } from "../../../sprite/character/Character";
 import { Platform } from "../../../sprite/platform/concrate/Platform";
 import { Creatable } from "../abstract/creatable";
+import DataStore from "../../../providers/DataStore";
 export class CreateObj implements Creatable {
   _p5: p5;
   dataStore: DataStore;
@@ -13,7 +13,7 @@ export class CreateObj implements Creatable {
   createPlatform(baseAnchor: Character) {
     let platforms = this.dataStore.getArray("platforms");
 
-    let characterPosBuf: Number = baseAnchor.getPos().x % 60;
+    let characterPosBuf: number = baseAnchor.getPos().x % 60;
     if (characterPosBuf > 50) {
       characterPosBuf = 0;
       const platformWidth = 40;
@@ -25,7 +25,32 @@ export class CreateObj implements Creatable {
       );
       const platformSize = this._p5.createVector(platformWidth, platformHeight);
 
-      platforms.push(new Platform(this._p5, platformSize, rectPos));
+      this.dataStore.pushItem(
+        "platforms",
+        new Platform(this._p5, platformSize, rectPos)
+      );
+    }
+  }
+
+  createGround(baseAnchor: Character) {
+    let platforms = this.dataStore.getArray("platforms");
+
+    let characterPosBuf: number = baseAnchor.getPos().x % 60;
+    if (characterPosBuf > 50) {
+      characterPosBuf = 0;
+      const platformWidth = 40;
+      const platformHeight = 10;
+
+      const rectPos = this._p5.createVector(
+        baseAnchor.getPos().x + 50,
+        this._p5.height / 1.7
+      );
+      const platformSize = this._p5.createVector(platformWidth, platformHeight);
+
+      this.dataStore.pushItem(
+        "platforms",
+        new Platform(this._p5, platformSize, rectPos)
+      );
     }
   }
 }

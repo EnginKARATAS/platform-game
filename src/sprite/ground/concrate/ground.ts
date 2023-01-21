@@ -35,10 +35,8 @@ export class Ground {
 
   draw() {
     const p5 = this._p5; // just for convenience
-
     p5.fill("rgb(0, 255, 0)");
-    p5.translate(this._position);
     p5.noStroke();
-    p5.rect(0, 0, this._size.x, this._size.y);
+    p5.rect(this._position.x, this._position.y, this._size.x, this._size.y);
   }
 }

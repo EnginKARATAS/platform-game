@@ -7,15 +7,21 @@ export abstract class Character implements Intersectable {
   _p5: p5;
 
   public _jumpAcc: number;
+  public _jumpMagnitude: number;
   public _movingRight: boolean;
   public _movingLeft: boolean;
 
   public _pos: Vector;
   public _speed: number;
   public _size: number;
-  constructor(p5: p5, position: Vector, speed: number = 2) {
+  constructor(
+    p5: p5,
+    position: Vector,
+    speed: number = 2,
+    jumpMagnitude: number = 7
+  ) {
     this._p5 = p5;
-
+    this._jumpMagnitude = jumpMagnitude;
     this._jumpAcc = -5;
     this._movingRight = false;
     this._movingLeft = false;
