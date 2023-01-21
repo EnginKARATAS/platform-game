@@ -20,6 +20,7 @@ const sketch = (p5: P5) => {
     intersectManager = new IntersectManager();
     dataStore = DataStore.getInstance();
     dataStore.setArray("platforms", []);
+    dataStore.setArray("grounds", []);
 
     let canvasX: number = 500;
     let canvasY: number = 200;
@@ -45,7 +46,7 @@ const sketch = (p5: P5) => {
     }
 
     const rectPos = p5.createVector(0, p5.height - 10);
-    const platformSize = p5.createVector(p5.width, 10);
+    const platformSize = p5.createVector(p5.width / 3, 10);
 
     ground = new Ground(p5, platformSize, rectPos);
 
@@ -67,9 +68,13 @@ const sketch = (p5: P5) => {
     );
 
     createObj.createPlatform(moly);
+    createObj.createGround(moly);
 
     let platformsArr = dataStore.getArray("platforms");
+    let groundsArr = dataStore.getArray("grounds");
+
     platformsArr.forEach((platform) => platform.draw());
+    groundsArr.forEach((ground) => ground.draw());
 
     p5.keyPressed = () => {
       if (p5.keyCode == p5.RIGHT_ARROW) {
