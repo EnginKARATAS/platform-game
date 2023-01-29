@@ -1,9 +1,10 @@
 import { Character } from "../../../sprite/character/Character";
 import { Platform } from "../../../sprite/platform/concrate/Platform";
 import { Intersectable } from "../abstract/intersectable";
+import { Touchable } from "../abstract/Touchable";
 
 export class IntersectManager implements Intersectable {
-  intersectTwoObj(obj1: Character, obj2: Platform): boolean {
+  intersectTwoObj(obj1: Character, obj2: Touchable): boolean {
     //A, B, C, D is diagonal of the rect object
     let A = obj1.getPos().x > obj2.getPos().x;
     let B = obj1.getPos().x < obj2.getPos().x + obj2.getSize().x;
@@ -16,7 +17,7 @@ export class IntersectManager implements Intersectable {
       return false;
     }
   }
-  intersectOneToManyObj(obj1: Character, obj2: Platform[]): boolean {
+  intersectOneToManyObj(obj1: Character, obj2: Touchable[]): boolean {
     for (let i = 0; i < obj2.length; i++) {
       if (this.intersectTwoObj(obj1, obj2[i])) {
         obj1._jumpAcc = 0;
