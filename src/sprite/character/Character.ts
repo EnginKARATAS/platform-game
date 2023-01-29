@@ -43,15 +43,10 @@ export abstract class Character implements Intersectable {
 
   draw() {
     const p5 = this._p5; // just for convenience
-
-    p5.push();
-
     // p5.translate(this._pos);
     p5.noStroke();
     p5.fill("black");
     // p5.ellipse(0, 0, this._size);
     p5.ellipse(this._pos.x, this._pos.y, this._size);
-
-    p5.pop();
   }
 }

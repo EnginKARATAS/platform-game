@@ -69,6 +69,7 @@ const sketch = (p5: P5) => {
       moly,
       dataStore.getArray("platforms")
     );
+    intersectManager.intersectOneToManyObj(moly, dataStore.getArray("grounds"));
 
     createObj.createPlatformFrom(moly);
     createObj.createGroundFrom(moly);

@@ -89386,14 +89386,12 @@ var Character = /*#__PURE__*/function () {
     key: "draw",
     value: function draw() {
       var p5 = this._p5; // just for convenience
-
-      p5.push(); // p5.translate(this._pos);
+      // p5.translate(this._pos);
 
       p5.noStroke();
       p5.fill("black"); // p5.ellipse(0, 0, this._size);
 
       p5.ellipse(this._pos.x, this._pos.y, this._size);
-      p5.pop();
     }
   }]);
 
@@ -89548,8 +89546,7 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
 
       this._pos.add(0, this._jumpAcc);
 
-      this._jumpAcc += EnvironmentConstants_1.EnvironmentConstants.gravity;
-      this._pos.y = this._p5.constrain(this._pos.y, 0, this._p5.height - this._size / 2 - 9); // this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width);
+      this._jumpAcc += EnvironmentConstants_1.EnvironmentConstants.gravity; // this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width);
       //provide memory leak
 
       this.resetJumpIteratorCounter();
@@ -89981,6 +89978,7 @@ var sketch = function sketch(p5) {
     ground.draw(); // p5.rect(0, 0, 200, 140);
 
     intersectManager.intersectOneToManyObj(moly, dataStore.getArray("platforms"));
+    intersectManager.intersectOneToManyObj(moly, dataStore.getArray("grounds"));
     createObj.createPlatformFrom(moly);
     createObj.createGroundFrom(moly);
     var platformsArr = dataStore.getArray("platforms");
@@ -90048,7 +90046,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51320" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56681" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

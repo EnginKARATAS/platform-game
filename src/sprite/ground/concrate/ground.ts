@@ -1,7 +1,8 @@
 import p5, { Vector } from "p5";
+import { Touchable } from "../../../utils/physics/abstract/Touchable";
 import { Skill } from "../../abstract/Skill";
 
-export class Ground {
+export class Ground implements Touchable {
   _p5: p5;
   _size: Vector;
   _position: Vector;

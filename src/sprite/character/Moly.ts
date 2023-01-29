@@ -26,11 +26,6 @@ export class Moly extends ImageCharacter implements Skill {
     this._pos.add(0, this._jumpAcc);
     this._jumpAcc += EnvironmentConstants.gravity;
 
-    this._pos.y = this._p5.constrain(
-      this._pos.y,
-      0,
-      this._p5.height - this._size / 2 - 9
-    );
     // this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width);
 
     //provide memory leak
