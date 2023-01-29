@@ -25,20 +25,22 @@ export class CreateObj implements Creatable {
     if (this.characterPosBuf % 60 > 50 && !this.platformCreated) {
       this.platformCreated = true;
       this.characterPosBuf = 0;
-      const platformWidth = 40;
-      const platformHeight = 10;
       let randomNumber = 1.7;
-      // CalculationConstants.generateRandomNumber(10, 20) * 0.1;
       const rectPos = this._p5.createVector(
         baseAnchor.getPos().x + this.renderDistance,
         this._p5.height / randomNumber
       );
-      const platformSize = this._p5.createVector(platformWidth, platformHeight);
-      const groundSize = this._p5.createVector(Math.random() * 30, 10);
 
       this.dataStore.pushItem(
         "platforms",
-        new Platform(this._p5, groundSize, rectPos)
+        new Platform(
+          this._p5,
+          { x: Math.random() * 30, y: 10 },
+          {
+            x: baseAnchor.getPos().x + this.renderDistance,
+            y: this._p5.height / randomNumber,
+          }
+        )
       );
     }
   }
@@ -46,9 +48,6 @@ export class CreateObj implements Creatable {
     let characterPosBuf: number = baseAnchor.getPos().x % 60;
     if (characterPosBuf > 50) {
       characterPosBuf = 0;
-      const groundWidth = 20;
-      const groundHeight = 10;
-
       const rectPos = this._p5.createVector(
         baseAnchor.getPos().x + this.renderDistance,
         this._p5.height - 10
@@ -56,7 +55,7 @@ export class CreateObj implements Creatable {
       const groundSize = this._p5.createVector(Math.random() * 30, 10);
       this.dataStore.pushItem(
         "grounds",
-        new Ground(this._p5, rectPos, groundSize)
+        new Ground(this._p5, groundSize, rectPos)
       );
     }
   }

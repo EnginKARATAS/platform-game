@@ -18,15 +18,17 @@ const sketch = (p5: P5) => {
   let intersectManager: IntersectManager;
 
   p5.setup = () => {
-    dataStore = DataStore.getInstance();
-    dataStore.setArray("platforms", []);
-    dataStore.setArray("grounds", []);
-
     p5.createCanvas(500, 200);
     p5.background("white");
 
+    dataStore = DataStore.getInstance();
+
+    dataStore.setArray("platforms", []);
+    dataStore.setArray("grounds", []);
+
     moly = new Moly(p5, p5.createVector(25, 140), Path.molyImg);
 
+    //render initial platforms and ground objects
     for (let i = 0; i < 3; i++) {
       const platform = new Platform(
         p5,
@@ -45,17 +47,13 @@ const sketch = (p5: P5) => {
 
   p5.draw = () => {
     p5.background(170);
-
     p5.scale(2);
     p5.translate(-moly.getPos().x * 0.95 + 100, -100);
 
     moly.draw();
     moly.move();
-    intersectManager.intersectOneToManyObj(
-      moly,
-      dataStore.getArray("platforms")
-    );
-    intersectManager.intersectOneToManyObj(moly, dataStore.getArray("grounds"));
+    intersectManager.intersectOneToMany(moly, dataStore.getArray("platforms"));
+    intersectManager.intersectOneToMany(moly, dataStore.getArray("grounds"));
 
     createObj.createPlatformFrom(moly);
     createObj.createGroundFrom(moly);
