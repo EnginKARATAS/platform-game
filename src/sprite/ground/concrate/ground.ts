@@ -1,4 +1,5 @@
 import p5, { Vector } from "p5";
+import { Vectoral } from "../../../types/Vectoral";
 import { Touchable } from "../../../utils/physics/abstract/Touchable";
 import { Skill } from "../../abstract/Skill";
 
@@ -7,11 +8,12 @@ export class Ground implements Touchable {
   _size: Vector;
   _position: Vector;
   _color?: string;
-  constructor(p5: p5, platformSize: Vector, position: Vector) {
+  constructor(p5: p5, position: Vectoral, platformSize: Vectoral) {
     this._p5 = p5;
-    this._size = platformSize;
-    this._position = position;
+    this._size = new Vector().set(platformSize.x, platformSize.y);
+    this._position = new Vector().set(position.x, position.y);
   }
+
   getPos(): Vector {
     return this._position;
   }

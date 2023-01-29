@@ -35,13 +35,11 @@ const sketch = (p5: P5) => {
         Date.now()
       );
       dataStore.pushItem("platforms", platform);
+      dataStore.pushItem(
+        "grounds",
+        new Ground(p5, { x: -50, y: 190 }, { x: 250, y: 10 })
+      );
     }
-
-    ground = new Ground(
-      p5,
-      p5.createVector(250, 10),
-      p5.createVector(-50, 190)
-    );
 
     createObj = new CreateObj(p5);
     intersectManager = new IntersectManager();
@@ -55,7 +53,6 @@ const sketch = (p5: P5) => {
 
     moly.draw();
     moly.move();
-    ground.draw();
     intersectManager.intersectOneToManyObj(
       moly,
       dataStore.getArray("platforms")

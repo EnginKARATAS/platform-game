@@ -89694,7 +89694,7 @@ var IntersectManager = /*#__PURE__*/function () {
 }();
 
 exports.IntersectManager = IntersectManager;
-},{}],"src/sprite/ground/concrate/ground.ts":[function(require,module,exports) {
+},{}],"src/sprite/ground/concrate/Ground.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -89708,13 +89708,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Ground = void 0;
 
+var p5_1 = require("p5");
+
 var Ground = /*#__PURE__*/function () {
-  function Ground(p5, platformSize, position) {
+  function Ground(p5, position, platformSize) {
     _classCallCheck(this, Ground);
 
     this._p5 = p5;
-    this._size = platformSize;
-    this._position = position;
+    this._size = new p5_1.Vector().set(platformSize.x, platformSize.y);
+    this._position = new p5_1.Vector().set(position.x, position.y);
   }
 
   _createClass(Ground, [{
@@ -89752,7 +89754,7 @@ var Ground = /*#__PURE__*/function () {
 }();
 
 exports.Ground = Ground;
-},{}],"src/providers/DataStore.ts":[function(require,module,exports) {
+},{"p5":"node_modules/p5/lib/p5.js"}],"src/providers/DataStore.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -89783,7 +89785,6 @@ var DataStore = /*#__PURE__*/function () {
       var _this = this;
 
       this.getArray("platforms").find(function (platform) {
-        console.log(platform._uniqueId, item._wuniqueId);
         platform._uniqueId == item._uniqueId && _this.data[key].push(item);
       });
       this.data[key].push(item);
@@ -89808,7 +89809,7 @@ var DataStore = /*#__PURE__*/function () {
 }();
 
 exports.default = DataStore;
-},{}],"src/utils/physics/concrate/CreateObj.ts":[function(require,module,exports) {
+},{}],"src/utils/physics/concrate/ObjectRenderManager.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -89830,9 +89831,9 @@ exports.CreateObj = void 0;
 
 var Platform_1 = require("../../../sprite/platform/concrate/Platform");
 
-var DataStore_1 = __importDefault(require("../../../providers/DataStore"));
+var Ground_1 = require("../../../sprite/ground/concrate/Ground");
 
-var ground_1 = require("../../../sprite/ground/concrate/ground");
+var DataStore_1 = __importDefault(require("../../../providers/DataStore"));
 
 var CreateObj = /*#__PURE__*/function () {
   function CreateObj(p5) {
@@ -89891,7 +89892,7 @@ var CreateObj = /*#__PURE__*/function () {
 
         var groundSize = this._p5.createVector(Math.random() * 30, 10);
 
-        this.dataStore.pushItem("grounds", new ground_1.Ground(this._p5, groundSize, rectPos));
+        this.dataStore.pushItem("grounds", new Ground_1.Ground(this._p5, rectPos, groundSize));
       }
     }
   }]);
@@ -89900,7 +89901,7 @@ var CreateObj = /*#__PURE__*/function () {
 }();
 
 exports.CreateObj = CreateObj;
-},{"../../../sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts","../../../providers/DataStore":"src/providers/DataStore.ts","../../../sprite/ground/concrate/ground":"src/sprite/ground/concrate/ground.ts"}],"src/app.ts":[function(require,module,exports) {
+},{"../../../sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts","../../../sprite/ground/concrate/Ground":"src/sprite/ground/concrate/Ground.ts","../../../providers/DataStore":"src/providers/DataStore.ts"}],"src/app.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -89927,45 +89928,40 @@ var Platform_1 = require("./sprite/platform/concrate/Platform");
 
 var IntersectManager_1 = require("./utils/physics/concrate/IntersectManager");
 
-var ground_1 = require("./sprite/ground/concrate/ground");
+var Ground_1 = require("./sprite/ground/concrate/Ground");
 
-var CreateObj_1 = require("./utils/physics/concrate/CreateObj");
+var ObjectRenderManager_1 = require("./utils/physics/concrate/ObjectRenderManager");
 
 var DataStore_1 = __importDefault(require("./providers/DataStore"));
 
 var sketch = function sketch(p5) {
   var dataStore;
-  var createObj = new CreateObj_1.CreateObj(p5);
+  var createObj = new ObjectRenderManager_1.CreateObj(p5);
   var moly;
   var ground;
   var intersectManager;
 
   p5.setup = function () {
-    intersectManager = new IntersectManager_1.IntersectManager();
     dataStore = DataStore_1.default.getInstance();
     dataStore.setArray("platforms", []);
     dataStore.setArray("grounds", []);
-    var canvasX = 500;
-    var canvasY = 200;
-    var canvas = p5.createCanvas(canvasX, canvasY);
+    p5.createCanvas(500, 200);
     p5.background("white");
-    var graundStartPos = p5.createVector(5, canvasY - 20);
-    moly = new Moly_1.Moly(p5, p5.createVector(graundStartPos.x + 20, graundStartPos.y - 40), Path_1.Path.molyImg);
+    moly = new Moly_1.Moly(p5, p5.createVector(25, 140), Path_1.Path.molyImg);
 
     for (var i = 0; i < 3; i++) {
-      var platformWidth = 40;
-      var platformHeight = 10;
-
-      var _rectPos = p5.createVector(200 * i + 30, p5.height / 1.7);
-
-      var _platformSize = p5.createVector(platformWidth, platformHeight);
-
-      dataStore.pushItem("platforms", new Platform_1.Platform(p5, _platformSize, _rectPos, Date.now()));
+      var platform = new Platform_1.Platform(p5, p5.createVector(40, 10), p5.createVector(200 * i + 30, 140), Date.now());
+      dataStore.pushItem("platforms", platform);
+      dataStore.pushItem("grounds", new Ground_1.Ground(p5, {
+        x: -50,
+        y: 190
+      }, {
+        x: 250,
+        y: 10
+      }));
     }
 
-    var rectPos = p5.createVector(-50, p5.height - 10);
-    var platformSize = p5.createVector(p5.width / 2, 10);
-    ground = new ground_1.Ground(p5, platformSize, rectPos);
+    createObj = new ObjectRenderManager_1.CreateObj(p5);
     intersectManager = new IntersectManager_1.IntersectManager();
   };
 
@@ -89975,50 +89971,46 @@ var sketch = function sketch(p5) {
     p5.translate(-moly.getPos().x * 0.95 + 100, -100);
     moly.draw();
     moly.move();
-    ground.draw(); // p5.rect(0, 0, 200, 140);
-
     intersectManager.intersectOneToManyObj(moly, dataStore.getArray("platforms"));
     intersectManager.intersectOneToManyObj(moly, dataStore.getArray("grounds"));
     createObj.createPlatformFrom(moly);
     createObj.createGroundFrom(moly);
-    var platformsArr = dataStore.getArray("platforms");
-    var groundsArr = dataStore.getArray("grounds");
-    platformsArr.forEach(function (platform) {
+    dataStore.getArray("platforms").forEach(function (platform) {
       return platform.draw();
     });
-    groundsArr.forEach(function (ground) {
+    dataStore.getArray("grounds").forEach(function (ground) {
       return ground.draw();
     });
+  };
 
-    p5.keyPressed = function () {
-      if (p5.keyCode == p5.RIGHT_ARROW) {
-        moly._movingRight = true;
-      }
+  p5.keyPressed = function () {
+    if (p5.keyCode == p5.RIGHT_ARROW) {
+      moly._movingRight = true;
+    }
 
-      if (p5.keyCode == p5.LEFT_ARROW) {
-        moly._movingLeft = true;
-      }
+    if (p5.keyCode == p5.LEFT_ARROW) {
+      moly._movingLeft = true;
+    }
 
-      if (p5.keyCode === p5.UP_ARROW) {
-        moly.jump();
-      }
-    };
+    if (p5.keyCode === p5.UP_ARROW) {
+      moly.jump();
+    }
+  };
 
-    p5.keyReleased = function () {
-      if (p5.keyCode == p5.RIGHT_ARROW) {
-        moly._movingRight = false;
-      }
+  p5.keyReleased = function () {
+    if (p5.keyCode == p5.RIGHT_ARROW) {
+      moly._movingRight = false;
+    }
 
-      if (p5.keyCode == p5.LEFT_ARROW) {
-        moly._movingLeft = false;
-      }
-    };
+    if (p5.keyCode == p5.LEFT_ARROW) {
+      moly._movingLeft = false;
+    }
   };
 }; // end of sketch
 
 
 new p5_1.default(sketch);
-},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./sprite/character/Moly":"src/sprite/character/Moly.ts","./utils/Path":"src/utils/Path.ts","./sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts","./utils/physics/concrate/IntersectManager":"src/utils/physics/concrate/IntersectManager.ts","./sprite/ground/concrate/ground":"src/sprite/ground/concrate/ground.ts","./utils/physics/concrate/CreateObj":"src/utils/physics/concrate/CreateObj.ts","./providers/DataStore":"src/providers/DataStore.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./sprite/character/Moly":"src/sprite/character/Moly.ts","./utils/Path":"src/utils/Path.ts","./sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts","./utils/physics/concrate/IntersectManager":"src/utils/physics/concrate/IntersectManager.ts","./sprite/ground/concrate/Ground":"src/sprite/ground/concrate/Ground.ts","./utils/physics/concrate/ObjectRenderManager":"src/utils/physics/concrate/ObjectRenderManager.ts","./providers/DataStore":"src/providers/DataStore.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -90046,7 +90038,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56681" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52073" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

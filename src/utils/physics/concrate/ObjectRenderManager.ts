@@ -2,9 +2,8 @@ import p5, { Vector } from "p5";
 import { Character } from "../../../sprite/character/Character";
 import { Platform } from "../../../sprite/platform/concrate/Platform";
 import { Creatable } from "../abstract/Creatable";
-import DataStore from "../../../providers/DataStore";
 import { Ground } from "../../../sprite/ground/concrate/Ground";
-import { CalculationConstants } from "../constants/concrate/CalculationConstants";
+import DataStore from "../../../providers/DataStore";
 export class CreateObj implements Creatable {
   _p5: p5;
   dataStore: DataStore;
@@ -57,7 +56,7 @@ export class CreateObj implements Creatable {
       const groundSize = this._p5.createVector(Math.random() * 30, 10);
       this.dataStore.pushItem(
         "grounds",
-        new Ground(this._p5, groundSize, rectPos)
+        new Ground(this._p5, rectPos, groundSize)
       );
     }
   }
