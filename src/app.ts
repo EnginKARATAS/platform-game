@@ -36,10 +36,9 @@ const sketch = (p5: P5) => {
       dataStore.pushItem("platforms", platform);
       dataStore.pushItem(
         "grounds",
-        new Ground(p5, { x: -50, y: 190 }, { x: 250, y: 10 })
+        new Ground(p5, { x: 250, y: 10 }, { x: -50, y: 190 })
       );
     }
-
     createObj = new CreateObj(p5);
     intersectManager = new IntersectManager();
   };
