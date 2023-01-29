@@ -30,9 +30,8 @@ const sketch = (p5: P5) => {
     for (let i = 0; i < 3; i++) {
       const platform = new Platform(
         p5,
-        p5.createVector(40, 10),
-        p5.createVector(200 * i + 30, 140),
-        Date.now()
+        { x: 40, y: 10 },
+        { x: 200 * i, y: 140 }
       );
       dataStore.pushItem("platforms", platform);
       dataStore.pushItem(

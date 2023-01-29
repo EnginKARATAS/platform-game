@@ -16,9 +16,6 @@ export default class DataStore {
   }
 
   public pushItem(key: string, item: any) {
-    this.getArray("platforms").find((platform) => {
-      platform._uniqueId == item._uniqueId && this.data[key].push(item);
-    });
     this.data[key].push(item);
   }
 

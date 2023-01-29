@@ -89598,14 +89598,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Platform = void 0;
 
+var p5_1 = require("p5");
+
 var Platform = /*#__PURE__*/function () {
-  function Platform(p5, platformSize, position, uniqueId) {
+  function Platform(p5, platformSize, position) {
     _classCallCheck(this, Platform);
 
     this._p5 = p5;
-    this._size = platformSize;
-    this._position = position;
-    this._uniqueId = uniqueId;
+    this._size = new p5_1.Vector().set(platformSize.x, platformSize.y);
+    this._position = new p5_1.Vector().set(position.x, position.y);
   }
 
   _createClass(Platform, [{
@@ -89643,7 +89644,7 @@ var Platform = /*#__PURE__*/function () {
 }();
 
 exports.Platform = Platform;
-},{}],"src/utils/physics/concrate/IntersectManager.ts":[function(require,module,exports) {
+},{"p5":"node_modules/p5/lib/p5.js"}],"src/utils/physics/concrate/IntersectManager.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -89782,11 +89783,6 @@ var DataStore = /*#__PURE__*/function () {
   }, {
     key: "pushItem",
     value: function pushItem(key, item) {
-      var _this = this;
-
-      this.getArray("platforms").find(function (platform) {
-        platform._uniqueId == item._uniqueId && _this.data[key].push(item);
-      });
       this.data[key].push(item);
     }
   }, {
@@ -89875,7 +89871,7 @@ var CreateObj = /*#__PURE__*/function () {
 
         var groundSize = this._p5.createVector(Math.random() * 30, 10);
 
-        this.dataStore.pushItem("platforms", new Platform_1.Platform(this._p5, groundSize, rectPos, Date.now()));
+        this.dataStore.pushItem("platforms", new Platform_1.Platform(this._p5, groundSize, rectPos));
       }
     }
   }, {
@@ -89950,7 +89946,13 @@ var sketch = function sketch(p5) {
     moly = new Moly_1.Moly(p5, p5.createVector(25, 140), Path_1.Path.molyImg);
 
     for (var i = 0; i < 3; i++) {
-      var platform = new Platform_1.Platform(p5, p5.createVector(40, 10), p5.createVector(200 * i + 30, 140), Date.now());
+      var platform = new Platform_1.Platform(p5, {
+        x: 40,
+        y: 10
+      }, {
+        x: 200 * i,
+        y: 140
+      });
       dataStore.pushItem("platforms", platform);
       dataStore.pushItem("grounds", new Ground_1.Ground(p5, {
         x: -50,

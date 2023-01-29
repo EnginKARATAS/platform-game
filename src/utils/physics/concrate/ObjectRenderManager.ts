@@ -38,7 +38,7 @@ export class CreateObj implements Creatable {
 
       this.dataStore.pushItem(
         "platforms",
-        new Platform(this._p5, groundSize, rectPos, Date.now())
+        new Platform(this._p5, groundSize, rectPos)
       );
     }
   }
