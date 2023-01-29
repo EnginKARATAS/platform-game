@@ -31,7 +31,7 @@ const sketch = (p5: P5) => {
 
     moly = new Moly(
       p5,
-      p5.createVector(graundStartPos.x + 80, graundStartPos.y - 40),
+      p5.createVector(graundStartPos.x + 20, graundStartPos.y - 40),
       Path.molyImg
     );
 
@@ -42,11 +42,14 @@ const sketch = (p5: P5) => {
       const rectPos = p5.createVector(200 * i + 30, p5.height / 1.7);
       const platformSize = p5.createVector(platformWidth, platformHeight);
 
-      dataStore.pushItem("platforms", new Platform(p5, platformSize, rectPos));
+      dataStore.pushItem(
+        "platforms",
+        new Platform(p5, platformSize, rectPos, Date.now())
+      );
     }
 
-    const rectPos = p5.createVector(0, p5.height - 10);
-    const platformSize = p5.createVector(p5.width / 3, 10);
+    const rectPos = p5.createVector(-50, p5.height - 10);
+    const platformSize = p5.createVector(p5.width / 2, 10);
 
     ground = new Ground(p5, platformSize, rectPos);
 
@@ -67,8 +70,8 @@ const sketch = (p5: P5) => {
       dataStore.getArray("platforms")
     );
 
-    createObj.createPlatform(moly);
-    createObj.createGround(moly);
+    createObj.createPlatformFrom(moly);
+    createObj.createGroundFrom(moly);
 
     let platformsArr = dataStore.getArray("platforms");
     let groundsArr = dataStore.getArray("grounds");

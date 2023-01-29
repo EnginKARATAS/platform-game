@@ -6,10 +6,17 @@ export class Platform {
   _size: Vector;
   _position: Vector;
   _color?: string;
-  constructor(p5: p5, platformSize: Vector, position: Vector) {
+  _uniqueId: number;
+  constructor(
+    p5: p5,
+    platformSize: Vector,
+    position: Vector,
+    uniqueId: number
+  ) {
     this._p5 = p5;
     this._size = platformSize;
     this._position = position;
+    this._uniqueId = uniqueId;
   }
   getPos(): Vector {
     return this._position;
