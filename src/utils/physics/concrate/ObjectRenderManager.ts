@@ -3,7 +3,7 @@ import { Character } from "../../../sprite/character/Character";
 import { Platform } from "../../../sprite/platform/concrate/Platform";
 import { Creatable } from "../abstract/Creatable";
 import DataStore from "../../../providers/DataStore";
-import { Ground } from "../../../sprite/ground/concrate/ground";
+import { Ground } from "../../../sprite/ground/concrate/Ground";
 import { CalculationConstants } from "../constants/concrate/CalculationConstants";
 export class CreateObj implements Creatable {
   _p5: p5;
