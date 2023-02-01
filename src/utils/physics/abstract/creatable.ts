@@ -1,5 +1,6 @@
 import { Intersectable } from "./intersectable";
+import { Renderable } from "./Renderable";
 export interface Creatable {
-  createPlatformFrom(baseAnchor: Intersectable): void;
-  createGroundFrom(baseAnchor: Intersectable): void;
+  createPlatformFrom(baseAnchor: Renderable): void;
+  createGroundFrom(baseAnchor: Renderable): void;
 }

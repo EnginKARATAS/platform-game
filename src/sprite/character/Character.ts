@@ -1,10 +1,9 @@
 import p5 from "p5";
 import { Vector } from "p5";
 import { Intersectable } from "../../utils/physics/abstract/intersectable";
-import { Touchable } from "../../utils/physics/abstract/Touchable";
-import { Platform } from "../platform/concrate/Platform";
+import { Renderable } from "../../utils/physics/abstract/Renderable";
 
-export abstract class Character implements Intersectable {
+export abstract class Character implements Intersectable, Renderable {
   _p5: p5;
 
   public _jumpAcc: number;
@@ -31,10 +30,13 @@ export abstract class Character implements Intersectable {
     this._size = 5;
     this._speed = speed;
   }
-  intersectTwoObj(obj1: Character, obj2: Touchable): boolean {
+  getSize(): { x: number; y: number } {
     throw new Error("Method not implemented.");
   }
-  intersectOneToManyObj(obj1: Character, obj2: Touchable[]): boolean {
+  intersectTwo(obj1: Character, obj2: Renderable): boolean {
+    throw new Error("Method not implemented.");
+  }
+  intersectOneToMany(obj1: Character, obj2: Renderable[]): boolean {
     throw new Error("Method not implemented.");
   }
 

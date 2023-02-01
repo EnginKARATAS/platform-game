@@ -1,8 +1,9 @@
 import p5, { Vector } from "p5";
 import { Skill } from "../../../../sprite/abstract/Skill";
 import { Vectoral } from "../../../../types/Vectoral";
+import { Renderable } from "../../abstract/Renderable";
 
-export abstract class Render {
+export abstract class Render implements Renderable {
   _size: Vector;
   _position: Vector;
   constructor(

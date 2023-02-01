@@ -47,11 +47,16 @@ const sketch = (p5: P5) => {
 
   p5.draw = () => {
     p5.background(170);
+
     p5.scale(2);
-    p5.translate(-moly.getPos().x * 0.95 + 100, -100);
+    p5.translate(-moly.getPos().x * 0.99 + 100, -100);
 
     moly.draw();
     moly.move();
+    p5.fill("blue");
+    p5.rect(500, 0, 20, 200);
+    p5.fill(0, 20, 255);
+    p5.rect(1000, 0, 20, 200);
     intersectManager.intersectOneToMany(moly, dataStore.getArray("platforms"));
     intersectManager.intersectOneToMany(moly, dataStore.getArray("grounds"));
 

@@ -4,6 +4,7 @@ import { Platform } from "../../../sprite/platform/concrate/Platform";
 import { Creatable } from "../abstract/Creatable";
 import { Ground } from "../../../sprite/ground/concrate/Ground";
 import DataStore from "../../../providers/DataStore";
+import { Renderable } from "../abstract/Renderable";
 export class CreateObj implements Creatable {
   _p5: p5;
   dataStore: DataStore;
@@ -13,7 +14,7 @@ export class CreateObj implements Creatable {
     this._p5 = p5;
     this.dataStore = DataStore.getInstance();
   }
-  createPlatformFrom(baseAnchor: Character) {
+  createPlatformFrom(baseAnchor: Renderable) {
     this.characterPosBuf = 0;
     if (this.characterPosBuf == 0) {
       this.characterPosBuf = baseAnchor.getPos().x;
@@ -44,7 +45,7 @@ export class CreateObj implements Creatable {
       );
     }
   }
-  createGroundFrom(baseAnchor: Character) {
+  createGroundFrom(baseAnchor: Renderable) {
     let characterPosBuf: number = baseAnchor.getPos().x % 60;
     if (characterPosBuf > 50) {
       characterPosBuf = 0;
