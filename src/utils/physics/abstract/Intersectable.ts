@@ -1,8 +1,8 @@
 import { Character } from "../../../sprite/character/Character";
 import { Platform } from "../../../sprite/platform/concrate/Platform";
+import { Renderable } from "./Renderable";
 
-export interface Intersectable{
-    intersectTwoObj(obj1: Character, obj2: Platform): boolean;
-    intersectOneToManyObj(obj1: Character, obj2: Platform[]): boolean;
-
+export interface Intersectable {
+  intersectTwo(obj1: Character, obj2: Renderable): boolean;
+  intersectOneToMany(obj1: Character, obj2: Renderable[]): boolean;
 }

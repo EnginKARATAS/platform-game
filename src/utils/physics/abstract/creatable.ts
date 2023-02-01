@@ -1,5 +1,6 @@
-import { Vector } from "p5";
 import { Intersectable } from "./intersectable";
+import { Renderable } from "./Renderable";
 export interface Creatable {
-  createPlatform(baseAnchor: Intersectable): void;
+  createPlatformFrom(baseAnchor: Renderable): void;
+  createGroundFrom(baseAnchor: Renderable): void;
 }

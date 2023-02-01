@@ -89350,24 +89350,44 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Character = void 0;
 
-var p5_1 = require("p5");
-
 var Character = /*#__PURE__*/function () {
   function Character(p5, position) {
+    var speed = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
+    var jumpMagnitude = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 7;
+
     _classCallCheck(this, Character);
 
     this._p5 = p5;
-    this._jumpAcc = -5;
+    this._jumpMagnitude = jumpMagnitude;
+    this._jumpAcc = -2;
     this._movingRight = false;
     this._movingLeft = false;
     this._pos = position;
-    this._size = 20;
-    this._speed = new p5_1.Vector();
-    this._speed.x = 0;
-    this._speed.y = 0;
+    this._size = 5;
+    this._speed = speed;
   }
 
   _createClass(Character, [{
+    key: "jump",
+    value: function jump() {
+      this._jumpAcc = -this._jumpMagnitude;
+    }
+  }, {
+    key: "getSize",
+    value: function getSize() {
+      throw new Error("Method not implemented.");
+    }
+  }, {
+    key: "intersectTwo",
+    value: function intersectTwo(obj1, obj2) {
+      throw new Error("Method not implemented.");
+    }
+  }, {
+    key: "intersectOneToMany",
+    value: function intersectOneToMany(obj1, obj2) {
+      throw new Error("Method not implemented.");
+    }
+  }, {
     key: "getPos",
     value: function getPos() {
       return this._pos;
@@ -89376,14 +89396,12 @@ var Character = /*#__PURE__*/function () {
     key: "draw",
     value: function draw() {
       var p5 = this._p5; // just for convenience
-
-      p5.push(); // p5.translate(this._pos);
+      // p5.translate(this._pos);
 
       p5.noStroke();
       p5.fill("black"); // p5.ellipse(0, 0, this._size);
 
       p5.ellipse(this._pos.x, this._pos.y, this._size);
-      p5.pop();
     }
   }]);
 
@@ -89391,7 +89409,7 @@ var Character = /*#__PURE__*/function () {
 }();
 
 exports.Character = Character;
-},{"p5":"node_modules/p5/lib/p5.js"}],"src/sprite/character/ImageCharacter.ts":[function(require,module,exports) {
+},{}],"src/sprite/character/ImageCharacter.ts":[function(require,module,exports) {
 "use strict";
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -89450,7 +89468,7 @@ var ImageCharacter = /*#__PURE__*/function (_Character_1$Characte) {
 }(Character_1.Character);
 
 exports.ImageCharacter = ImageCharacter;
-},{"./Character":"src/sprite/character/Character.ts"}],"src/utils/Environment.ts":[function(require,module,exports) {
+},{"./Character":"src/sprite/character/Character.ts"}],"src/constants/concrate/EnvironmentConstants.ts":[function(require,module,exports) {
 "use strict";
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -89462,17 +89480,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Environment = void 0;
+exports.EnvironmentConstants = void 0;
 
-var Environment = /*#__PURE__*/_createClass(function Environment(p5) {
-  _classCallCheck(this, Environment);
-
-  this._p5 = p5;
+var EnvironmentConstants = /*#__PURE__*/_createClass(function EnvironmentConstants() {
+  _classCallCheck(this, EnvironmentConstants);
 });
 
-exports.Environment = Environment;
-Environment.gravity = 0.5;
-Environment.graund = 500;
+exports.EnvironmentConstants = EnvironmentConstants;
+EnvironmentConstants.gravity = 0.5;
+EnvironmentConstants.graund = 500;
 },{}],"src/sprite/character/Moly.ts":[function(require,module,exports) {
 "use strict";
 
@@ -89505,7 +89521,7 @@ exports.Moly = void 0;
 
 var ImageCharacter_1 = require("./ImageCharacter");
 
-var Environment_1 = require("../../utils/Environment");
+var EnvironmentConstants_1 = require("../../constants/concrate/EnvironmentConstants");
 
 var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
   _inherits(Moly, _ImageCharacter_1$Ima);
@@ -89525,24 +89541,18 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
       this.move();
     }
   }, {
-    key: "jump",
-    value: function jump() {
-      this._jumpAcc = -10;
-    }
-  }, {
     key: "move",
     value: function move() {
       if (this._movingRight) {
-        this._pos.add(10, 0);
+        this._pos.add(this._speed, 0);
       } else if (this._movingLeft) {
-        this._pos.x -= 10;
+        this._pos.add(-this._speed, 0);
       }
 
       this._pos.add(0, this._jumpAcc);
 
-      this._jumpAcc += Environment_1.Environment.gravity;
-      this._pos.y = this._p5.constrain(this._pos.y, 0, this._p5.height);
-      this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width); //provide memory leak
+      this._jumpAcc += EnvironmentConstants_1.EnvironmentConstants.gravity; // this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width);
+      //provide memory leak
 
       this.resetJumpIteratorCounter();
     }
@@ -89559,7 +89569,7 @@ var Moly = /*#__PURE__*/function (_ImageCharacter_1$Ima) {
 }(ImageCharacter_1.ImageCharacter);
 
 exports.Moly = Moly;
-},{"./ImageCharacter":"src/sprite/character/ImageCharacter.ts","../../utils/Environment":"src/utils/Environment.ts"}],"src/utils/Path.ts":[function(require,module,exports) {
+},{"./ImageCharacter":"src/sprite/character/ImageCharacter.ts","../../constants/concrate/EnvironmentConstants":"src/constants/concrate/EnvironmentConstants.ts"}],"src/utils/Path.ts":[function(require,module,exports) {
 "use strict";
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -89579,7 +89589,7 @@ var Path = /*#__PURE__*/_createClass(function Path() {
 
 exports.Path = Path;
 Path.molyImg = "./src/image/moly.png";
-},{}],"src/sprite/platform/concrate/Platform.ts":[function(require,module,exports) {
+},{}],"src/utils/physics/render/abstract/Render.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -89591,18 +89601,23 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Platform = void 0;
+exports.Render = void 0;
 
-var Platform = /*#__PURE__*/function () {
-  function Platform(p5, platformSize, position) {
-    _classCallCheck(this, Platform);
+var p5_1 = require("p5");
 
-    this._p5 = p5;
-    this._size = platformSize;
-    this._position = position;
+var Render = /*#__PURE__*/function () {
+  function Render(p5, platformSize, position) {
+    var color = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "black";
+
+    _classCallCheck(this, Render);
+
+    this.p5 = p5;
+    this.color = color;
+    this._size = new p5_1.Vector().set(platformSize.x, platformSize.y);
+    this._position = new p5_1.Vector().set(position.x, position.y);
   }
 
-  _createClass(Platform, [{
+  _createClass(Render, [{
     key: "getPos",
     value: function getPos() {
       return this._position;
@@ -89613,34 +89628,66 @@ var Platform = /*#__PURE__*/function () {
       return this._size;
     }
   }, {
-    key: "intersect",
-    value: function intersect(characterPos, objPos, objSize) {
-      //A, B, C, D is diagonal of the rect object
-      var A = characterPos.getPos().x > objPos.x;
-      var B = characterPos.getPos().x < objPos.x + objSize.x;
-      var C = characterPos.getPos().y > objPos.y;
-      var D = characterPos.getPos().y < objPos.y + objSize.y;
-      if (A && B && C && D) return true;else return false;
-    }
-  }, {
     key: "draw",
     value: function draw() {
-      var p5 = this._p5; // just for convenience
-
-      p5.push();
-      p5.translate(this._position);
-      p5.noStroke();
-      p5.fill("blue");
-      p5.rect(0, 0, this._size.x, this._size.y);
-      p5.pop();
+      this.p5.noStroke();
+      this.p5.fill(this.color);
+      this.p5.rect(this._position.x, this._position.y, this._size.x, this._size.y);
     }
   }]);
 
-  return Platform;
+  return Render;
 }();
 
+exports.Render = Render;
+},{"p5":"node_modules/p5/lib/p5.js"}],"src/sprite/platform/concrate/Platform.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Platform = void 0;
+
+var Render_1 = require("../../../utils/physics/render/abstract/Render");
+
+var Platform = /*#__PURE__*/function (_Render_1$Render) {
+  _inherits(Platform, _Render_1$Render);
+
+  var _super = _createSuper(Platform);
+
+  function Platform(p5, platformSize, position) {
+    _classCallCheck(this, Platform);
+
+    return _super.call(this, p5, platformSize, position, "red");
+  }
+
+  return _createClass(Platform);
+}(Render_1.Render);
+
 exports.Platform = Platform;
-},{}],"src/utils/physics/concrate/IntersectManager.ts":[function(require,module,exports) {
+},{"../../../utils/physics/render/abstract/Render":"src/utils/physics/render/abstract/Render.ts"}],"src/utils/physics/concrate/IntersectManager.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -89660,8 +89707,8 @@ var IntersectManager = /*#__PURE__*/function () {
   }
 
   _createClass(IntersectManager, [{
-    key: "intersectTwoObj",
-    value: function intersectTwoObj(obj1, obj2) {
+    key: "intersectTwo",
+    value: function intersectTwo(obj1, obj2) {
       //A, B, C, D is diagonal of the rect object
       var A = obj1.getPos().x > obj2.getPos().x;
       var B = obj1.getPos().x < obj2.getPos().x + obj2.getSize().x;
@@ -89675,10 +89722,10 @@ var IntersectManager = /*#__PURE__*/function () {
       }
     }
   }, {
-    key: "intersectOneToManyObj",
-    value: function intersectOneToManyObj(obj1, obj2) {
+    key: "intersectOneToMany",
+    value: function intersectOneToMany(obj1, obj2) {
       for (var i = 0; i < obj2.length; i++) {
-        if (this.intersectTwoObj(obj1, obj2[i])) {
+        if (this.intersectTwo(obj1, obj2[i])) {
           obj1._jumpAcc = 0;
         }
       }
@@ -89691,6 +89738,314 @@ var IntersectManager = /*#__PURE__*/function () {
 }();
 
 exports.IntersectManager = IntersectManager;
+},{}],"src/sprite/ground/concrate/Ground.ts":[function(require,module,exports) {
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Ground = void 0;
+
+var Render_1 = require("../../../utils/physics/render/abstract/Render");
+
+var Ground = /*#__PURE__*/function (_Render_1$Render) {
+  _inherits(Ground, _Render_1$Render);
+
+  var _super = _createSuper(Ground);
+
+  function Ground(p5, platformSize, position) {
+    _classCallCheck(this, Ground);
+
+    return _super.call(this, p5, platformSize, position, "green");
+  }
+
+  return _createClass(Ground);
+}(Render_1.Render);
+
+exports.Ground = Ground;
+},{"../../../utils/physics/render/abstract/Render":"src/utils/physics/render/abstract/Render.ts"}],"src/providers/DataStore.ts":[function(require,module,exports) {
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var DataStore = /*#__PURE__*/function () {
+  function DataStore() {
+    _classCallCheck(this, DataStore);
+
+    this.data = {};
+  }
+
+  _createClass(DataStore, [{
+    key: "setArray",
+    value: function setArray(key, arr) {
+      this.data[key] = arr;
+    }
+  }, {
+    key: "pushItem",
+    value: function pushItem(key, item) {
+      this.data[key].push(item);
+    }
+  }, {
+    key: "getArray",
+    value: function getArray(key) {
+      return this.data[key];
+    }
+  }], [{
+    key: "getInstance",
+    value: function getInstance() {
+      if (!DataStore.instance) {
+        DataStore.instance = new DataStore();
+      }
+
+      return DataStore.instance;
+    }
+  }]);
+
+  return DataStore;
+}();
+
+exports.default = DataStore;
+},{}],"src/utils/physics/concrate/ObjectRenderManager.ts":[function(require,module,exports) {
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CreateObj = void 0;
+
+var Platform_1 = require("../../../sprite/platform/concrate/Platform");
+
+var Ground_1 = require("../../../sprite/ground/concrate/Ground");
+
+var DataStore_1 = __importDefault(require("../../../providers/DataStore"));
+
+var CreateObj = /*#__PURE__*/function () {
+  function CreateObj(p5) {
+    var renderDistance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
+
+    _classCallCheck(this, CreateObj);
+
+    this.renderDistance = renderDistance;
+    this.platformCreated = false;
+    this.characterPosBuf = 0;
+    this._p5 = p5;
+    this.dataStore = DataStore_1.default.getInstance();
+  }
+
+  _createClass(CreateObj, [{
+    key: "createPlatformFrom",
+    value: function createPlatformFrom(baseAnchor) {
+      this.characterPosBuf = 0;
+
+      if (this.characterPosBuf == 0) {
+        this.characterPosBuf = baseAnchor.getPos().x;
+      }
+
+      this.platformCreated = false;
+      this.characterPosBuf = baseAnchor.getPos().x;
+
+      if (this.characterPosBuf % 60 > 50) {}
+
+      if (this.characterPosBuf % 60 > 50 && !this.platformCreated) {
+        this.platformCreated = true;
+        this.characterPosBuf = 0;
+        var randomNumber = 1.7;
+
+        var rectPos = this._p5.createVector(baseAnchor.getPos().x + this.renderDistance, this._p5.height / randomNumber);
+
+        this.dataStore.pushItem("platforms", new Platform_1.Platform(this._p5, {
+          x: Math.random() * 30,
+          y: 10
+        }, {
+          x: baseAnchor.getPos().x + this.renderDistance,
+          y: this._p5.height / randomNumber
+        }));
+      }
+    }
+  }, {
+    key: "createGroundFrom",
+    value: function createGroundFrom(baseAnchor) {
+      var characterPosBuf = baseAnchor.getPos().x % 60;
+
+      if (characterPosBuf > 50) {
+        characterPosBuf = 0;
+
+        var rectPos = this._p5.createVector(baseAnchor.getPos().x + this.renderDistance, this._p5.height - 10);
+
+        var groundSize = this._p5.createVector(Math.random() * 30, 10);
+
+        this.dataStore.pushItem("grounds", new Ground_1.Ground(this._p5, groundSize, rectPos));
+      }
+    }
+  }]);
+
+  return CreateObj;
+}();
+
+exports.CreateObj = CreateObj;
+},{"../../../sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts","../../../sprite/ground/concrate/Ground":"src/sprite/ground/concrate/Ground.ts","../../../providers/DataStore":"src/providers/DataStore.ts"}],"src/constants/concrate/KeyboardControl.ts":[function(require,module,exports) {
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.KeyboardControl = void 0;
+
+var KeyboardControl = /*#__PURE__*/function () {
+  function KeyboardControl() {
+    _classCallCheck(this, KeyboardControl);
+  }
+
+  _createClass(KeyboardControl, null, [{
+    key: "control",
+    value: function control(p5, character) {
+      p5.keyPressed = function () {
+        if (p5.keyCode == p5.RIGHT_ARROW) {
+          character._movingRight = true;
+        }
+
+        if (p5.keyCode == p5.LEFT_ARROW) {
+          character._movingLeft = true;
+        }
+
+        if (p5.keyCode === p5.UP_ARROW) {
+          character.jump();
+        }
+      };
+
+      p5.keyReleased = function () {
+        if (p5.keyCode == p5.RIGHT_ARROW) {
+          character._movingRight = false;
+        }
+
+        if (p5.keyCode == p5.LEFT_ARROW) {
+          character._movingLeft = false;
+        }
+      };
+    }
+  }]);
+
+  return KeyboardControl;
+}();
+
+exports.KeyboardControl = KeyboardControl;
+},{}],"src/sprite/boarder/Borader.ts":[function(require,module,exports) {
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Boarder = void 0;
+
+var Boarder = /*#__PURE__*/function () {
+  function Boarder(p5) {
+    _classCallCheck(this, Boarder);
+
+    this.p5 = p5;
+    this.xBoarderSize = 140;
+    this.rectCounter = 0;
+    this.rectY = 20;
+    this.rects = [];
+    this.boarderPos = {
+      x: 0,
+      y: 0
+    };
+  }
+
+  _createClass(Boarder, [{
+    key: "assign",
+    value: function assign(rects) {
+      this.rects = rects;
+    }
+  }, {
+    key: "showRelative",
+    value: function showRelative(character, txtArr) {
+      this.boarderPos = {
+        x: character.getPos().x - 40,
+        y: character.getPos().y * 0.7 + 55
+      };
+      this.showBoarderRelative(character);
+      this.showRectsRelative(txtArr);
+    }
+  }, {
+    key: "showRectsRelative",
+    value: function showRectsRelative(stringArr) {
+      this.p5.textSize(4);
+      this.p5.fill(128, 0, 128);
+
+      for (var i = 0; i < stringArr.length; i++) {
+        this.p5.text(stringArr[i], this.boarderPos.x, this.boarderPos.y + 5 + this.rectY * i / 4);
+      }
+    }
+  }, {
+    key: "showBoarderRelative",
+    value: function showBoarderRelative(character) {
+      //p5 rect opacity
+      this.p5.fill(0, 60, 0, 20);
+      this.p5.rect(this.boarderPos.x, this.boarderPos.y, 40, 20);
+      this.p5.fill(0, 0, 0, 100);
+      this.p5.text("log screen", this.boarderPos.x, this.boarderPos.y);
+    }
+  }]);
+
+  return Boarder;
+}();
+
+exports.Boarder = Boarder;
 },{}],"src/app.ts":[function(require,module,exports) {
 "use strict";
 
@@ -89706,8 +90061,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var p5_1 = __importDefault(require("p5"));
 
-require("p5/lib/addons/p5.dom"); // import "p5/lib/addons/p5.sound";	// Include if needed
-
+require("p5/lib/addons/p5.dom");
 
 require("./styles.scss");
 
@@ -89719,70 +90073,93 @@ var Platform_1 = require("./sprite/platform/concrate/Platform");
 
 var IntersectManager_1 = require("./utils/physics/concrate/IntersectManager");
 
+var Ground_1 = require("./sprite/ground/concrate/Ground");
+
+var ObjectRenderManager_1 = require("./utils/physics/concrate/ObjectRenderManager");
+
+var DataStore_1 = __importDefault(require("./providers/DataStore"));
+
+var KeyboardControl_1 = require("./constants/concrate/KeyboardControl");
+
+var Borader_1 = require("./sprite/boarder/Borader");
+
 var sketch = function sketch(p5) {
+  var dataStore;
+  var createObj = new ObjectRenderManager_1.CreateObj(p5);
+  var boarder;
   var moly;
-  var platforms = [];
-  var myCircles = [];
+  var ground;
   var intersectManager;
 
   p5.setup = function () {
-    var canvasX = 500;
-    var canvasY = 200;
-    var canvas = p5.createCanvas(canvasX, canvasY);
+    p5.createCanvas(500, 250);
     p5.background("white");
-    var graundStartPos = p5.createVector(5, canvasY - 20);
-    moly = new Moly_1.Moly(p5, p5.createVector(graundStartPos.x + 200, graundStartPos.y), Path_1.Path.molyImg);
+    dataStore = DataStore_1.default.getInstance();
+    dataStore.setArray("platforms", []);
+    dataStore.setArray("grounds", []);
+    moly = new Moly_1.Moly(p5, p5.createVector(25, 140), Path_1.Path.molyImg);
+    boarder = new Borader_1.Boarder(p5); //render initial platforms and ground objects
 
     for (var i = 0; i < 3; i++) {
-      var platformWidth = 40;
-      var platformHeight = 10;
-      var rectPos = p5.createVector(200 * i, p5.height / 1.7);
-      var platformSize = p5.createVector(platformWidth, platformHeight);
-      platforms.push(new Platform_1.Platform(p5, platformSize, rectPos));
+      var platform = new Platform_1.Platform(p5, {
+        x: 40,
+        y: 10
+      }, {
+        x: 200 * i,
+        y: 140
+      });
+      dataStore.pushItem("platforms", platform);
+      dataStore.pushItem("grounds", new Ground_1.Ground(p5, {
+        x: 250,
+        y: 10
+      }, {
+        x: -50,
+        y: 190
+      }));
     }
 
+    createObj = new ObjectRenderManager_1.CreateObj(p5);
     intersectManager = new IntersectManager_1.IntersectManager();
-  }; // p5.keyPressed();
-
+    boarder.assign([{
+      id: "moly",
+      r: 100
+    }, {
+      id: "moly",
+      r: 100
+    }, {
+      id: "moly",
+      r: 100
+    }]);
+  };
 
   p5.draw = function () {
-    p5.background(255);
+    p5.background(170);
+    p5.scale(2);
+    p5.translate(-moly.getPos().x * 0.99 + 100, -moly.getPos().y * 0.99 + 50);
     moly.draw();
     moly.move();
-    intersectManager.intersectOneToManyObj(moly, platforms);
-    platforms.forEach(function (platform) {
+    p5.fill("blue");
+    p5.rect(500, 0, 20, 200);
+    p5.fill(0, 20, 255);
+    p5.rect(1000, 0, 20, 200);
+    intersectManager.intersectOneToMany(moly, dataStore.getArray("platforms"));
+    intersectManager.intersectOneToMany(moly, dataStore.getArray("grounds"));
+    createObj.createPlatformFrom(moly);
+    createObj.createGroundFrom(moly);
+    dataStore.getArray("platforms").forEach(function (platform) {
       return platform.draw();
     });
-
-    p5.keyPressed = function () {
-      if (p5.keyCode == p5.RIGHT_ARROW) {
-        moly._movingRight = true;
-      }
-
-      if (p5.keyCode == p5.LEFT_ARROW) {
-        moly._movingLeft = true;
-      }
-
-      if (p5.keyCode === p5.UP_ARROW) {
-        moly.jump();
-      }
-    };
-
-    p5.keyReleased = function () {
-      if (p5.keyCode == p5.RIGHT_ARROW) {
-        moly._movingRight = false;
-      }
-
-      if (p5.keyCode == p5.LEFT_ARROW) {
-        moly._movingLeft = false;
-      }
-    };
+    dataStore.getArray("grounds").forEach(function (ground) {
+      return ground.draw();
+    });
+    boarder.showRelative(moly, [moly.getPos().x.toString(), moly.getPos().y.toString()]);
+    KeyboardControl_1.KeyboardControl.control(p5, moly);
   };
 }; // end of sketch
 
 
 new p5_1.default(sketch);
-},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./sprite/character/Moly":"src/sprite/character/Moly.ts","./utils/Path":"src/utils/Path.ts","./sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts","./utils/physics/concrate/IntersectManager":"src/utils/physics/concrate/IntersectManager.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"p5":"node_modules/p5/lib/p5.js","p5/lib/addons/p5.dom":"node_modules/p5/lib/addons/p5.dom.js","./styles.scss":"src/styles.scss","./sprite/character/Moly":"src/sprite/character/Moly.ts","./utils/Path":"src/utils/Path.ts","./sprite/platform/concrate/Platform":"src/sprite/platform/concrate/Platform.ts","./utils/physics/concrate/IntersectManager":"src/utils/physics/concrate/IntersectManager.ts","./sprite/ground/concrate/Ground":"src/sprite/ground/concrate/Ground.ts","./utils/physics/concrate/ObjectRenderManager":"src/utils/physics/concrate/ObjectRenderManager.ts","./providers/DataStore":"src/providers/DataStore.ts","./constants/concrate/KeyboardControl":"src/constants/concrate/KeyboardControl.ts","./sprite/boarder/Borader":"src/sprite/boarder/Borader.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -89810,7 +90187,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59962" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53363" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

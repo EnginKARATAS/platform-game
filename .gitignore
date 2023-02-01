@@ -1,3 +1,11 @@
 node_modules
 .cache
-dist
+*.map
+# Build artifacts
+dist/
+build/
+# npm
+# TypeScript
+*.js
+*.js.map
+*.d.ts

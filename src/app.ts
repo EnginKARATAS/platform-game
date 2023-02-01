@@ -1,87 +1,88 @@
 import P5, { Vector } from "p5";
 import "p5/lib/addons/p5.dom";
-// import "p5/lib/addons/p5.sound";	// Include if needed
 import "./styles.scss";
-
-// DEMO: A sample class implementation
-import MyCircle from "./MyCircle";
 import { Moly } from "./sprite/character/Moly";
-import { Character } from "./sprite/character/Character";
 import { Path } from "./utils/Path";
 import { Platform } from "./sprite/platform/concrate/Platform";
-import { Environment } from "./utils/Environment";
 import { IntersectManager } from "./utils/physics/concrate/IntersectManager";
-import { Ground } from "./sprite/ground/concrate/ground";
+import { Ground } from "./sprite/ground/concrate/Ground";
+import { CreateObj } from "./utils/physics/concrate/ObjectRenderManager";
+import DataStore from "./providers/DataStore";
+import { KeyboardControl } from "./constants/concrate/KeyboardControl";
+import { Boarder } from "./sprite/boarder/Borader";
 
 const sketch = (p5: P5) => {
+  let dataStore: DataStore;
+
+  let createObj: CreateObj = new CreateObj(p5);
+  let boarder: Boarder;
   let moly: Moly;
-  let platforms: Platform[] = [];
   let ground: Ground;
   let intersectManager: IntersectManager;
+
   p5.setup = () => {
-    let canvasX: number = 500;
-    let canvasY: number = 200;
-    const canvas = p5.createCanvas(canvasX, canvasY);
+    p5.createCanvas(500, 250);
     p5.background("white");
 
-    const graundStartPos = p5.createVector(5, canvasY - 20);
+    dataStore = DataStore.getInstance();
 
-    moly = new Moly(
-      p5,
-      p5.createVector(graundStartPos.x + 40, graundStartPos.y - 50),
-      Path.molyImg
-    );
+    dataStore.setArray("platforms", []);
+    dataStore.setArray("grounds", []);
 
+    moly = new Moly(p5, p5.createVector(25, 140), Path.molyImg);
+    boarder = new Boarder(p5);
+
+    //render initial platforms and ground objects
     for (let i = 0; i < 3; i++) {
-      const platformWidth = 40;
-      const platformHeight = 10;
-
-      const rectPos = p5.createVector(200 * i, p5.height / 1.7);
-      const platformSize = p5.createVector(platformWidth, platformHeight);
-
-      platforms.push(new Platform(p5, platformSize, rectPos));
+      const platform = new Platform(
+        p5,
+        { x: 40, y: 10 },
+        { x: 200 * i, y: 140 }
+      );
+      dataStore.pushItem("platforms", platform);
+      dataStore.pushItem(
+        "grounds",
+        new Ground(p5, { x: 250, y: 10 }, { x: -50, y: 190 })
+      );
     }
-
-    const rectPos = p5.createVector(0, p5.height - 10);
-    const platformSize = p5.createVector(p5.width, 10);
-
-    platforms.push(new Ground(p5, platformSize, rectPos));
-
+    createObj = new CreateObj(p5);
     intersectManager = new IntersectManager();
-  };
-  // p5.keyPressed();
-  p5.draw = () => {
-    p5.background(255);
-    p5.scale(2);
 
-    p5.translate(-moly.getPos().x * 0.95 + 100, -100);
+    boarder.assign([
+      { id: "moly", r: 100 },
+      { id: "moly", r: 100 },
+      { id: "moly", r: 100 },
+    ]);
+  };
+
+  p5.draw = () => {
+    p5.background(170);
+
+    p5.scale(2);
+    p5.translate(-moly.getPos().x * 0.99 + 100, -moly.getPos().y * 0.99 + 50);
+
     moly.draw();
     moly.move();
 
-    intersectManager.intersectOneToManyObj(moly, platforms);
+    p5.fill("blue");
+    p5.rect(500, 0, 20, 200);
+    p5.fill(0, 20, 255);
+    p5.rect(1000, 0, 20, 200);
+    intersectManager.intersectOneToMany(moly, dataStore.getArray("platforms"));
+    intersectManager.intersectOneToMany(moly, dataStore.getArray("grounds"));
 
-    platforms.forEach((platform) => platform.draw());
+    createObj.createPlatformFrom(moly);
+    createObj.createGroundFrom(moly);
 
-    p5.keyPressed = () => {
-      if (p5.keyCode == p5.RIGHT_ARROW) {
-        moly._movingRight = true;
-      }
-      if (p5.keyCode == p5.LEFT_ARROW) {
-        moly._movingLeft = true;
-      }
-      if (p5.keyCode === p5.UP_ARROW) {
-        moly.jump();
-      }
-    };
+    dataStore.getArray("platforms").forEach((platform) => platform.draw());
+    dataStore.getArray("grounds").forEach((ground) => ground.draw());
 
-    p5.keyReleased = () => {
-      if (p5.keyCode == p5.RIGHT_ARROW) {
-        moly._movingRight = false;
-      }
-      if (p5.keyCode == p5.LEFT_ARROW) {
-        moly._movingLeft = false;
-      }
-    };
+    boarder.showRelative(moly, [
+      moly.getPos().x.toString(),
+      moly.getPos().y.toString(),
+    ]);
+
+    KeyboardControl.control(p5, moly);
   };
 }; // end of sketch
 new P5(sketch);
