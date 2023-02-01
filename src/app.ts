@@ -63,7 +63,6 @@ const sketch = (p5: P5) => {
 
     moly.draw();
     moly.move();
-    boarder.showRelative(moly,[moly.getPos().x.toString(),moly.getPos().y.toString()]]);
 
     p5.fill("blue");
     p5.rect(500, 0, 20, 200);
@@ -77,6 +76,11 @@ const sketch = (p5: P5) => {
 
     dataStore.getArray("platforms").forEach((platform) => platform.draw());
     dataStore.getArray("grounds").forEach((ground) => ground.draw());
+
+    boarder.showRelative(moly, [
+      moly.getPos().x.toString(),
+      moly.getPos().y.toString(),
+    ]);
 
     KeyboardControl.control(p5, moly);
   };

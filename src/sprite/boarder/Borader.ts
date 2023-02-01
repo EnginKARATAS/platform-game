@@ -22,7 +22,7 @@ export class Boarder {
   public showRelative(character: Character, txtArr: string[]): void {
     this.boarderPos = {
       x: character.getPos().x - 40,
-      y: this.p5.height / 2 + 30,
+      y: character.getPos().y * 0.7 + 55,
     };
     this.showBoarderRelative(character);
     this.showRectsRelative(txtArr);
