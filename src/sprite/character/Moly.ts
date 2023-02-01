@@ -2,7 +2,7 @@ import p5, { Vector } from "p5";
 import { ImageCharacter } from "./ImageCharacter";
 import { Environment } from "../../utils/Environment";
 import { Skill } from "../abstract/Skill";
-import { EnvironmentConstants } from "../../utils/physics/constants/concrate/EnvironmentConstants";
+import { EnvironmentConstants } from "../../constants/concrate/EnvironmentConstants";
 
 export class Moly extends ImageCharacter implements Skill {
   constructor(p5: p5, position: Vector, imagePath: string) {
@@ -14,9 +14,6 @@ export class Moly extends ImageCharacter implements Skill {
     this.move();
   }
 
-  jump(): void {
-    this._jumpAcc = -this._jumpMagnitude;
-  }
   move(): void {
     if (this._movingRight) {
       this._pos.add(this._speed, 0);

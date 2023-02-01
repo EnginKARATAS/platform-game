@@ -30,6 +30,9 @@ export abstract class Character implements Intersectable, Renderable {
     this._size = 5;
     this._speed = speed;
   }
+  jump(): void {
+    this._jumpAcc = -this._jumpMagnitude;
+  }
   getSize(): { x: number; y: number } {
     throw new Error("Method not implemented.");
   }

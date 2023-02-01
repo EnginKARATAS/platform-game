@@ -8,6 +8,7 @@ import { IntersectManager } from "./utils/physics/concrate/IntersectManager";
 import { Ground } from "./sprite/ground/concrate/Ground";
 import { CreateObj } from "./utils/physics/concrate/ObjectRenderManager";
 import DataStore from "./providers/DataStore";
+import { KeyboardControl } from "./constants/concrate/KeyboardControl";
 
 const sketch = (p5: P5) => {
   let dataStore: DataStore;
@@ -65,27 +66,8 @@ const sketch = (p5: P5) => {
 
     dataStore.getArray("platforms").forEach((platform) => platform.draw());
     dataStore.getArray("grounds").forEach((ground) => ground.draw());
-  };
 
-  p5.keyPressed = () => {
-    if (p5.keyCode == p5.RIGHT_ARROW) {
-      moly._movingRight = true;
-    }
-    if (p5.keyCode == p5.LEFT_ARROW) {
-      moly._movingLeft = true;
-    }
-    if (p5.keyCode === p5.UP_ARROW) {
-      moly.jump();
-    }
-  };
-
-  p5.keyReleased = () => {
-    if (p5.keyCode == p5.RIGHT_ARROW) {
-      moly._movingRight = false;
-    }
-    if (p5.keyCode == p5.LEFT_ARROW) {
-      moly._movingLeft = false;
-    }
+    KeyboardControl.control(p5, moly);
   };
 }; // end of sketch
 new P5(sketch);
