@@ -7,17 +7,10 @@ interface Rect {
 }
 
 export class Boarder {
-  private xBoarderSize = 140;
-  private rectCounter = 0;
   private rectY = 20;
-  private rects: Rect[] = [];
   private boarderPos = { x: 0, y: 0 };
 
   constructor(private p5: p5) {}
-
-  public assign(rects: Rect[]): void {
-    this.rects = rects;
-  }
 
   public showRelative(character: Character, txtArr: string[]): void {
     this.boarderPos = {

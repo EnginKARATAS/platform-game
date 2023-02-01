@@ -4,6 +4,6 @@ import { Render } from "../../../utils/physics/render/abstract/Render";
 
 export class Ground extends Render {
   constructor(p5: p5, platformSize: Vectoral, position: Vectoral) {
-    super(p5, platformSize, position, "green");
+    super(p5, position, platformSize, "green");
   }
 }

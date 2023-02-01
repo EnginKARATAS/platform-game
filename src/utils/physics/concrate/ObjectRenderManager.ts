@@ -8,7 +8,6 @@ import { Renderable } from "../abstract/Renderable";
 export class CreateObj implements Creatable {
   _p5: p5;
   dataStore: DataStore;
-  platformCreated = false;
   characterPosBuf: number = 0;
   constructor(p5: p5, private renderDistance: number = 200) {
     this._p5 = p5;
@@ -19,12 +18,10 @@ export class CreateObj implements Creatable {
     if (this.characterPosBuf == 0) {
       this.characterPosBuf = baseAnchor.getPos().x;
     }
-    this.platformCreated = false;
     this.characterPosBuf = baseAnchor.getPos().x;
     if (this.characterPosBuf % 60 > 50) {
     }
-    if (this.characterPosBuf % 60 > 50 && !this.platformCreated) {
-      this.platformCreated = true;
+    if (this.characterPosBuf % 60 > 50) {
       this.characterPosBuf = 0;
       let randomNumber = 1.7;
       const rectPos = this._p5.createVector(
@@ -48,7 +45,6 @@ export class CreateObj implements Creatable {
   createGroundFrom(baseAnchor: Renderable) {
     let characterPosBuf: number = baseAnchor.getPos().x % 60;
     if (characterPosBuf > 50) {
-      characterPosBuf = 0;
       const rectPos = this._p5.createVector(
         baseAnchor.getPos().x + this.renderDistance,
         this._p5.height - 10
@@ -56,7 +52,7 @@ export class CreateObj implements Creatable {
       const groundSize = this._p5.createVector(Math.random() * 30, 10);
       this.dataStore.pushItem(
         "grounds",
-        new Ground(this._p5, groundSize, rectPos)
+        new Ground(this._p5, rectPos, groundSize)
       );
     }
   }
