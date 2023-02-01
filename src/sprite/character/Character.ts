@@ -22,7 +22,7 @@ export abstract class Character implements Intersectable, Renderable {
   ) {
     this._p5 = p5;
     this._jumpMagnitude = jumpMagnitude;
-    this._jumpAcc = -5;
+    this._jumpAcc = -2;
     this._movingRight = false;
     this._movingLeft = false;
 

@@ -9,17 +9,19 @@ import { Ground } from "./sprite/ground/concrate/Ground";
 import { CreateObj } from "./utils/physics/concrate/ObjectRenderManager";
 import DataStore from "./providers/DataStore";
 import { KeyboardControl } from "./constants/concrate/KeyboardControl";
+import { Boarder } from "./sprite/boarder/Borader";
 
 const sketch = (p5: P5) => {
   let dataStore: DataStore;
 
   let createObj: CreateObj = new CreateObj(p5);
+  let boarder: Boarder;
   let moly: Moly;
   let ground: Ground;
   let intersectManager: IntersectManager;
 
   p5.setup = () => {
-    p5.createCanvas(500, 200);
+    p5.createCanvas(500, 250);
     p5.background("white");
 
     dataStore = DataStore.getInstance();
@@ -28,6 +30,7 @@ const sketch = (p5: P5) => {
     dataStore.setArray("grounds", []);
 
     moly = new Moly(p5, p5.createVector(25, 140), Path.molyImg);
+    boarder = new Boarder(p5);
 
     //render initial platforms and ground objects
     for (let i = 0; i < 3; i++) {
@@ -44,16 +47,24 @@ const sketch = (p5: P5) => {
     }
     createObj = new CreateObj(p5);
     intersectManager = new IntersectManager();
+
+    boarder.assign([
+      { id: "moly", r: 100 },
+      { id: "moly", r: 100 },
+      { id: "moly", r: 100 },
+    ]);
   };
 
   p5.draw = () => {
     p5.background(170);
 
     p5.scale(2);
-    p5.translate(-moly.getPos().x * 0.99 + 100, -100);
+    p5.translate(-moly.getPos().x * 0.99 + 100, -moly.getPos().y * 0.99 + 50);
 
     moly.draw();
     moly.move();
+    boarder.showRelative(moly,[moly.getPos().x.toString(),moly.getPos().y.toString()]]);
+
     p5.fill("blue");
     p5.rect(500, 0, 20, 200);
     p5.fill(0, 20, 255);
