@@ -3,3 +3,8 @@ Browser-based platform game. P5.Js library with TypeScript. Fully implemented cl
 
 ##Notice
 Game starting on app.ts file
+
+#How to play on debug mode:
+1. Download the project
+2. `npm install`
+3. `npm start`
