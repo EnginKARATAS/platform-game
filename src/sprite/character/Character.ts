@@ -1,11 +1,12 @@
 import p5 from "p5";
 import { Vector } from "p5";
+import { Vectoral } from "../../types/Vectoral";
 import { Intersectable } from "../../utils/physics/abstract/intersectable";
 import { Renderable } from "../../utils/physics/abstract/Renderable";
 
 export abstract class Character implements Intersectable, Renderable {
   _p5: p5;
-
+  public _color: number = 40;
   public _jumpAcc: number;
   public _jumpMagnitude: number;
   public _movingRight: boolean;
@@ -29,6 +30,13 @@ export abstract class Character implements Intersectable, Renderable {
     this._pos = position;
     this._size = 5;
     this._speed = speed;
+  }
+  setSpeed(speed: number): void {
+    this._jumpAcc = speed;
+  }
+  setPos(pos: Vectoral): void {
+    this._pos.x = pos.x;
+    this._pos.y = pos.y;
   }
   jump(): void {
     this._jumpAcc = -this._jumpMagnitude;
