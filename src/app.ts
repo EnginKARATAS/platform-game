@@ -8,8 +8,10 @@ import { IntersectManager } from "./utils/physics/concrate/IntersectManager";
 import { Ground } from "./sprite/ground/concrate/Ground";
 import { CreateObj } from "./utils/physics/concrate/ObjectRenderManager";
 import DataStore from "./providers/DataStore";
-import { KeyboardControl } from "./constants/concrate/KeyboardControl";
 import { Boarder } from "./sprite/boarder/Borader";
+import { PlayerControl } from "./constants/concrate/PlayerControl";
+import { EnvironmentConstants } from "./constants/concrate/EnvironmentConstants";
+import { GameManager } from "./utils/physics/concrate/GameManager";
 
 const sketch = (p5: P5) => {
   let sprite_sheet; //variable to hold the image + info
@@ -50,38 +52,80 @@ const sketch = (p5: P5) => {
         new Ground(p5, { x: -50, y: 190 }, { x: 250, y: 10 })
       );
     }
+    p5.textFont("Georgia");
     createObj = new CreateObj(p5);
     intersectManager = new IntersectManager();
   };
 
   p5.draw = () => {
-    p5.background(170);
+    if (EnvironmentConstants.MENU == 0) {
+      //menu
+      var x = p5.mouseX;
+      var y = p5.mouseY;
+      p5.background(0);
+      p5.fill(255);
+      p5.text("Click to start", 75, 100);
 
-    p5.scale(2);
-    p5.translate(-moly.getPos().x * 0.99 + 100, -moly.getPos().y * 0.99 + 50);
+      p5.textSize(32);
+      p5.textSize(32);
+      p5.text("⬇️", x, y + 50);
+      p5.text("⬅️", x - 50, y);
+      p5.textSize(12);
+      p5.text("Play With", x - 5, y - 10);
+      p5.textSize(32);
+      p5.text("➡️", x + 50, y);
+      p5.text("⬆️", x, y - 50);
 
-    moly.draw();
-    moly.move();
+      p5.textSize(32);
+      p5.text("github.com/platform-game", 75, 200);
+    } else if (EnvironmentConstants.MENU == 1) {
+      //game
+      p5.background(170);
 
-    p5.fill("blue");
-    p5.rect(500, 0, 20, 200);
-    p5.fill(0, 20, 255);
-    p5.rect(1000, 0, 20, 200);
-    intersectManager.intersectOneToMany(moly, dataStore.getArray("platforms"));
-    intersectManager.intersectOneToMany(moly, dataStore.getArray("grounds"));
+      p5.scale(2);
+      p5.translate(-moly.getPos().x * 0.99 + 100, -moly.getPos().y * 0.99 + 50);
 
-    createObj.createPlatformFrom(moly);
-    createObj.createGroundFrom(moly);
+      if (moly.getPos().y > 500) {
+        GameManager.endTheGame(p5, moly);
+      }
+      moly.draw();
+      moly.move();
 
-    dataStore.getArray("platforms").forEach((platform) => platform.draw());
-    dataStore.getArray("grounds").forEach((ground) => ground.draw());
+      p5.fill("blue");
+      p5.rect(500, 0, 20, 200);
+      p5.fill(0, 20, 255);
+      p5.rect(1000, 0, 20, 200);
+      intersectManager.intersectOneToMany(
+        moly,
+        dataStore.getArray("platforms")
+      );
+      intersectManager.intersectOneToMany(moly, dataStore.getArray("grounds"));
 
-    boarder.showRelative(moly, [
-      moly.getPos().x.toString(),
-      moly.getPos().y.toString(),
-    ]);
+      createObj.createPlatformFrom(moly);
+      createObj.createGroundFrom(moly);
 
-    KeyboardControl.control(p5, moly);
+      dataStore.getArray("platforms").forEach((platform) => platform.draw());
+      dataStore.getArray("grounds").forEach((ground) => ground.draw());
+
+      boarder.showRelative(moly, [
+        moly.getPos().x.toString(),
+        moly.getPos().y.toString(),
+      ]);
+    } else if (EnvironmentConstants.MENU == 2) {
+      //failed screen
+      p5.background(0);
+      p5.fill(255);
+      p5.textSize(32);
+      p5.text("You Failed", 75, 100);
+      p5.text("Click to restart", 75, 150);
+    }
+
+    p5.mouseClicked = () => {
+      if (EnvironmentConstants.MENU == 0 || EnvironmentConstants.MENU == 2) {
+        EnvironmentConstants.MENU = 1;
+      }
+    };
+    PlayerControl.keyboardController(p5, moly);
   };
 }; // end of sketch
 new P5(sketch);
