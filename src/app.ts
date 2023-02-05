@@ -31,12 +31,21 @@ const sketch = (p5: P5) => {
   p5.setup = () => {
     p5.createCanvas(500, 250);
     p5.background("white");
+
+    intersectManager = new IntersectManager();
+
     dataStore = DataStore.getInstance();
 
     dataStore.setArray("platforms", []);
     dataStore.setArray("grounds", []);
 
-    moly = new Moly(p5, p5.createVector(25, 140), Path.molyImg);
+    moly = new Moly(
+      p5,
+      p5.createVector(25, 140),
+      Path.molyImg,
+      intersectManager,
+      dataStore
+    );
     boarder = new Boarder(p5);
 
     //render initial platforms and ground objects
@@ -54,7 +63,6 @@ const sketch = (p5: P5) => {
     }
     p5.textFont("Georgia");
     createObj = new CreateObj(p5);
-    intersectManager = new IntersectManager();
   };
 
   p5.draw = () => {
@@ -99,7 +107,12 @@ const sketch = (p5: P5) => {
         moly,
         dataStore.getArray("platforms")
       );
-      intersectManager.intersectOneToMany(moly, dataStore.getArray("grounds"));
+      if (
+        intersectManager.intersectOneToMany(moly, dataStore.getArray("grounds"))
+      ) {
+        console.log("object");
+        moly.resetJumping();
+      }
 
       createObj.createPlatformFrom(moly);
       createObj.createGroundFrom(moly);

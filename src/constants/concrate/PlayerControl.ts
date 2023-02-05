@@ -5,7 +5,6 @@ import { EnvironmentConstants } from "./EnvironmentConstants";
 export class PlayerControl {
   static keyboardController(p5: p5, character: Character): void {
     p5.keyPressed = () => {
-      console.log(p5.keyCode);
       if (EnvironmentConstants.MENU == 0 || EnvironmentConstants.MENU == 2) {
         EnvironmentConstants.MENU = 1;
       }

@@ -21,6 +21,7 @@ export class IntersectManager implements Intersectable {
     for (let i = 0; i < obj2.length; i++) {
       if (this.intersectTwo(obj1, obj2[i])) {
         obj1._jumpAcc = 0;
+        return true;
       }
     }
     return false;
