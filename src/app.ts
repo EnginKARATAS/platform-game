@@ -12,18 +12,23 @@ import { KeyboardControl } from "./constants/concrate/KeyboardControl";
 import { Boarder } from "./sprite/boarder/Borader";
 
 const sketch = (p5: P5) => {
-  let dataStore: DataStore;
+  let sprite_sheet; //variable to hold the image + info
+  let sprite_sheet_animation; //variable to hold a stand-alone animation
+  let laptopObj; //sprite object to attach the animation to
+  var sprite;
 
+  let dataStore: DataStore;
   let createObj: CreateObj = new CreateObj(p5);
   let boarder: Boarder;
   let moly: Moly;
-  let ground: Ground;
   let intersectManager: IntersectManager;
+  p5.preload = () => {
+    // sprite_sheet = loadSpriteSheet("./sprite/assets/Run.png", 128, 128, 179);
+  };
 
   p5.setup = () => {
     p5.createCanvas(500, 250);
     p5.background("white");
-
     dataStore = DataStore.getInstance();
 
     dataStore.setArray("platforms", []);
