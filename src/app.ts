@@ -1,6 +1,5 @@
 import P5, { Vector } from "p5";
 import "p5/lib/addons/p5.dom";
-import "./styles.scss";
 import { Moly } from "./sprite/character/Moly";
 import { Path } from "./utils/Path";
 import { Platform } from "./sprite/platform/concrate/Platform";
