@@ -2,22 +2,20 @@
   "name": "p5js-with-typescript",
   "version": "1.0.0",
   "description": "A template for a p5.js sketch using Typescript",
-  "default": "index.html",
+  "type": "module",
   "scripts": {
-    "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@types/p5": "^1.7.6",
-    "p5": "^1.9.0",
-    "parcel": "^2.11.0",
-    "postcss": "^8.4.35",
-    "postcss-scss": "^4.0.9"
+    "p5": "^1.9.0"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.11.0",
-    "sass": "^1.71.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "sass": "^1.71.0"
   },
   "keywords": [
     "p5js",
