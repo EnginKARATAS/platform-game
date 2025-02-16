@@ -1,15 +1,18 @@
 //auto-generate this file: tsc --init
 {
-  "compilerOptions": {                        
-    "target": "es6",                               
-    "module": "commonjs",                           
-    "outDir": "./dist/tsc-output",                             
-    "rootDir": "./src",                             
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
     "moduleResolution": "node",
-    "esModuleInterop": true,                       
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterport": false
   },
-  "exclude":[
-    "./node_modules"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
