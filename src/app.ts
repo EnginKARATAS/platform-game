@@ -1,10 +1,10 @@
-import P5, { Vector } from "p5";
-import "p5/lib/addons/p5.dom";
+import P5 from "p5";
+import { Vector } from "p5";
 import { Moly } from "./sprite/character/Moly";
 import { Path } from "./utils/Path";
 import { Platform } from "./sprite/platform/concrate/Platform";
 import { IntersectManager } from "./utils/physics/concrate/IntersectManager";
-import { Ground } from "./sprite/ground/concrate/Ground";
+import { Ground } from "./sprite/ground/concrate/ground";
 import { CreateObj } from "./utils/physics/concrate/ObjectRenderManager";
 import DataStore from "./providers/DataStore";
 import { Boarder } from "./sprite/boarder/Borader";
