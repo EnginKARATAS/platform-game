@@ -14,7 +14,7 @@ export class Hades extends Character implements Skill {
 
   move(): void {
     this._pos.y += this._jumpAcc;
-    this._jumpAcc += Environment.gravity;
+    this._jumpAcc += Environment.GRAVITY;
     this._pos.y = this._p5.constrain(this._pos.y, 0, this._p5.height);
   }
 }

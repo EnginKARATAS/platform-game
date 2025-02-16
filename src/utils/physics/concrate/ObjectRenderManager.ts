@@ -1,8 +1,8 @@
 import p5, { Vector } from "p5";
 import { Character } from "../../../sprite/character/Character";
 import { Platform } from "../../../sprite/platform/concrate/Platform";
-import { Creatable } from "../abstract/Creatable";
-import { Ground } from "../../../sprite/ground/concrate/Ground";
+import { Creatable } from "../abstract/creatable";
+import { Ground } from "../../../sprite/ground/concrate/ground";
 import DataStore from "../../../providers/DataStore";
 import { Renderable } from "../abstract/Renderable";
 export class CreateObj implements Creatable {
