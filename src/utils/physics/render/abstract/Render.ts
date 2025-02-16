@@ -34,4 +34,13 @@ export abstract class Render implements Renderable {
       this._size.y
     );
   }
+
+  setPos(pos: Vectoral): void {
+    this._position.x = pos.x;
+    this._position.y = pos.y;
+  }
+
+  setSpeed(speed: number): void {
+    // Implement speed setting logic if needed
+  }
 }
