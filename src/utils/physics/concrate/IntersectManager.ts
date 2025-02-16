@@ -1,8 +1,6 @@
 import { Character } from "../../../sprite/character/Character";
-import { Platform } from "../../../sprite/platform/concrate/Platform";
-import { Intersectable } from "../abstract/intersectable";
 import { Renderable } from "../abstract/Renderable";
-
+import { Intersectable } from "../abstract/Intersectable";
 export class IntersectManager implements Intersectable {
   intersectTwo(obj1: Character, obj2: Renderable): boolean {
     //A, B, C, D is diagonal of the rect object

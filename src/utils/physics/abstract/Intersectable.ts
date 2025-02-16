@@ -1,5 +1,4 @@
 import { Character } from "../../../sprite/character/Character";
-import { Platform } from "../../../sprite/platform/concrate/Platform";
 import { Renderable } from "./Renderable";
 
 export interface Intersectable {

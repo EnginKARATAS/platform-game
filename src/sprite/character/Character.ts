@@ -2,10 +2,10 @@ import p5 from "p5";
 import { Vector } from "p5";
 import DataStore from "../../providers/DataStore";
 import { Vectoral } from "../../types/Vectoral";
-import { Intersectable } from "../../utils/physics/abstract/intersectable";
 import { Renderable } from "../../utils/physics/abstract/Renderable";
 import { IntersectManager } from "../../utils/physics/concrate/IntersectManager";
 import { Skill } from "../abstract/Skill";
+import { Intersectable } from "../../utils/physics/abstract/Intersectable";
 
 export abstract class Character implements Intersectable, Renderable, Skill {
   _p5: p5;
