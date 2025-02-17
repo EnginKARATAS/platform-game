@@ -13,7 +13,7 @@ export class GameManager {
     p5.text("You Failed", 75, 100);
     p5.text("Click to restart", 75, 150);
 
-    if (character.getPos().y > 500) {
+    if (character.getPos().y > 800) {
       EnvironmentConstants.MENU = 2;
       character.setPos({ x: 25, y: 40 });
       character.setSpeed(0);

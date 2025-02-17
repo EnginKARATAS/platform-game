@@ -47,9 +47,9 @@ export class CreateObj implements Creatable {
     if (characterPosBuf > 50) {
       const rectPos = this._p5.createVector(
         baseAnchor.getPos().x + this.renderDistance,
-        this._p5.height - 10
+        this._p5.height - 20
       );
-      const groundSize = this._p5.createVector(Math.random() * 30, 10);
+      const groundSize = this._p5.createVector(Math.random() * 50, 20);
       this.dataStore.pushItem(
         "grounds",
         new Ground(this._p5, rectPos, groundSize)

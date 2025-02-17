@@ -28,7 +28,7 @@ const sketch = (p5: P5) => {
   };
 
   p5.setup = () => {
-    p5.createCanvas(500, 250);
+    p5.createCanvas(800, 600);
     p5.background("white");
 
     intersectManager = new IntersectManager();

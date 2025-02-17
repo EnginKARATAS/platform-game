@@ -33,7 +33,7 @@ export abstract class Character implements Intersectable, Renderable, Skill {
     this._movingLeft = false;
 
     this._pos = position;
-    this._size = 5;
+    this._size = 20;
     this._speed = speed;
     this.intersectManager = intersectManager;
     this.dataStore = DataStore.getInstance();
