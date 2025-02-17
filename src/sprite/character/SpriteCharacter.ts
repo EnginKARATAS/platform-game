@@ -29,7 +29,6 @@ export abstract class SpriteCharacter extends Character {
     protected loadSprite(): void {
         this._p5.loadImage(this.spritePath, (img) => {
             this.spriteSheet = img;
-            console.log("Sprite loaded successfully");
         });
     }
 
@@ -74,19 +73,8 @@ export abstract class SpriteCharacter extends Character {
     }
 
     updatePosition() {
-        if (this.isIdle()) {
-            this.velocity.x = 0;
-            this.velocity.y = 0;
-        } else if (this._movingRight) {
-            this.velocity.x = this._speed;
-            this.state = 'moving';
-        } else if (this._movingLeft) {
-            this.velocity.x = -this._speed;
-            this.state = 'moving';
-        }
-
-        // Apply velocity to position
-        this._pos.add(this.velocity);
+        // Let the concrete class (Moly) handle movement
+        this.move();
     }
 
     isIdle() {

@@ -4,16 +4,20 @@ import { Vectoral } from "../../../../types/Vectoral";
 import { Renderable } from "../../abstract/Renderable";
 
 export abstract class Render implements Renderable {
-  _size: Vector;
-  _position: Vector;
+  protected _size: Vector;
+  protected _position: Vector;
   constructor(
-    private p5: p5,
+    private readonly p5: p5,
     platformSize: Vectoral,
     position: Vectoral,
     private color: string = "black"
   ) {
     this._size = new Vector().set(platformSize.x, platformSize.y);
     this._position = new Vector().set(position.x, position.y);
+  }
+
+  protected getP5(): p5 {
+    return this.p5;
   }
 
   getPos(): Vector {

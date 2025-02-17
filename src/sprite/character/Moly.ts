@@ -20,35 +20,54 @@ export class Moly extends SpriteCharacter {
     this.draw();
     this.move();
   }
+
   jump(): void {
     if (this._jumpingCounter < 2) {
-      if (
-        this.intersectManager.intersectOneToMany(
-          this,
-          this.dataStore.getArray("grounds")
-        )
-      ) {
-        this._jumpingCounter = 0;
-      }
-      this._jumpAcc = -this._jumpMagnitude;
+      this.velocity.y = -this._jumpMagnitude;
       this._jumpingCounter++;
+      this.state = "jumping";
     }
   }
 
   move(): void {
     if (this._movingRight) {
-      this._pos.add(this._speed, 0);
+      this.velocity.x = this._speed;
     } else if (this._movingLeft) {
-      this._pos.add(-this._speed, 0);
+      this.velocity.x = -this._speed;
+    } else {
+      this.velocity.x = 0;
     }
-    this._pos.add(0, this._jumpAcc);
-    this._jumpAcc += EnvironmentConstants.gravity;
 
-    this.resetJumpIteratorCounter();
+    this.velocity.y += EnvironmentConstants.gravity;
+
+    const prevY = this._pos.y;
+
+    this._pos.add(this.velocity);
+
+    if (
+      this.intersectManager.intersectOneToMany(
+        this,
+        this.dataStore.getArray("grounds")
+      )
+    ) {
+      this._pos.y = prevY;
+      this.velocity.y = 0;
+      this._jumpingCounter = 0;
+
+      if (this._movingRight || this._movingLeft) {
+        this.state = "moving";
+      } else {
+        this.state = "idle";
+      }
+    }
   }
-  resetJumpIteratorCounter() {
-    if (this._jumpAcc % 1000 == 0) {
-      this._jumpAcc = 0;
+
+  resetJumping(): void {
+    this._jumpingCounter = 0;
+    if (!this._movingRight && !this._movingLeft) {
+      this.state = "idle";
+    } else {
+      this.state = "moving";
     }
   }
 }

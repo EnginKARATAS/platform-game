@@ -32,32 +32,40 @@ const sketch = (p5: P5) => {
     p5.background("white");
 
     intersectManager = new IntersectManager();
-
     dataStore = DataStore.getInstance();
 
     dataStore.setArray("platforms", []);
     dataStore.setArray("grounds", []);
 
-    moly = new Moly(
-      p5,
-      p5.createVector(25, 140),
-      intersectManager,
-      dataStore
-    );
+    moly = new Moly(p5, p5.createVector(25, 140), intersectManager, dataStore);
     boarder = new Boarder(p5);
 
-    for (let i = 0; i < 3; i++) {
-      const platform = new Platform(
-        p5,
-        { x: 40, y: 10 },
-        { x: 200 * i, y: 140 }
-      );
-      dataStore.pushItem("platforms", platform);
+    // Create a more interesting ground layout
+    const groundLayout = [
+      { pos: { x: 0, y: 300 }, size: { x: 250, y: 40 } }, // Starting platform
+    ];
+
+    // Create grounds based on the layout
+    groundLayout.forEach((ground) => {
+      dataStore.pushItem("grounds", new Ground(p5, ground.pos, ground.size));
+    });
+
+    // Add some platforms for variety
+    const platformLayout = [
+      { pos: { x: 400, y: 100 }, size: { x: 60, y: 10 } },
+      { pos: { x: 700, y: 80 }, size: { x: 40, y: 10 } },
+      { pos: { x: 1000, y: 120 }, size: { x: 50, y: 10 } },
+      { pos: { x: 1300, y: 90 }, size: { x: 45, y: 10 } },
+    ];
+
+    // Create platforms based on the layout
+    platformLayout.forEach((platform) => {
       dataStore.pushItem(
-        "grounds",
-        new Ground(p5, { x: -50, y: 190 }, { x: 250, y: 10 })
+        "platforms",
+        new Platform(p5, platform.size, platform.pos)
       );
-    }
+    });
+
     p5.textFont("Georgia");
     createObj = new CreateObj(p5);
   };
@@ -84,16 +92,19 @@ const sketch = (p5: P5) => {
       p5.text("github.com/platform-game", 75, 200);
     } else if (EnvironmentConstants.MENU == 1) {
       p5.background(170);
-
-      p5.scale(2);
-      p5.translate(-moly.getPos().x * 0.99 + 100, -moly.getPos().y * 0.99 + 50);
-
+      // Center camera on Moly
+      p5.scale(1);
+      const screenCenterX = p5.width / 4; // Divide by 4 because of scale(2)
+      const screenCenterY = p5.height / 4;
+      p5.translate(
+        -moly.getPos().x + screenCenterX,
+        -moly.getPos().y + screenCenterY
+      );
       if (moly.getPos().y > 500) {
         GameManager.endTheGame(p5, moly);
       }
       moly.draw();
       moly.move();
-
       p5.fill("blue");
       p5.rect(500, 0, 20, 200);
       p5.fill(0, 20, 255);
@@ -105,7 +116,6 @@ const sketch = (p5: P5) => {
       if (
         intersectManager.intersectOneToMany(moly, dataStore.getArray("grounds"))
       ) {
-        console.log("object");
         moly.resetJumping();
       }
 

@@ -71,7 +71,6 @@ export abstract class Character implements Intersectable, Renderable, Skill {
   draw() {
     const p5 = this._p5;
     p5.noStroke();
-    p5.fill("black");
     p5.ellipse(this._pos.x, this._pos.y, this._size);
   }
 
@@ -79,7 +78,6 @@ export abstract class Character implements Intersectable, Renderable, Skill {
     this._movingRight = false;
     this._movingLeft = false;
     this._jumpingCounter = 0;
-    this.velocity = this._p5.createVector(0, 0); // Reset velocity
     this.state = 'idle'; // Reset state
   }
 
