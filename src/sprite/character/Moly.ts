@@ -1,20 +1,19 @@
-import p5, { Vector } from "p5";
-import { ImageCharacter } from "./ImageCharacter";
-import { Environment } from "../../utils/Environment";
-import { Skill } from "../abstract/Skill";
+import p5 from "p5";
+import { SpriteCharacter } from "./SpriteCharacter";
 import { EnvironmentConstants } from "../../constants/concrate/EnvironmentConstants";
 import { IntersectManager } from "../../utils/physics/concrate/IntersectManager";
 import DataStore from "../../providers/DataStore";
+import { Path } from "../../utils/Path";
 
-export class Moly extends ImageCharacter {
+export class Moly extends SpriteCharacter {
   constructor(
     p5: p5,
-    position: Vector,
-    imagePath: string,
+    position: p5.Vector,
     intersectManager: IntersectManager,
     dataStore: DataStore
   ) {
-    super(p5, position, imagePath, intersectManager, dataStore);
+    super(p5, position, Path.hammermanImg, intersectManager, dataStore);
+    this._size = 40;
   }
 
   render(): void {
@@ -45,9 +44,6 @@ export class Moly extends ImageCharacter {
     this._pos.add(0, this._jumpAcc);
     this._jumpAcc += EnvironmentConstants.gravity;
 
-    // this._pos.x = this._p5.constrain(this._pos.x, 0, this._p5.width);
-
-    //provide memory leak
     this.resetJumpIteratorCounter();
   }
   resetJumpIteratorCounter() {

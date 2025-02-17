@@ -15,10 +15,24 @@ export abstract class ImageCharacter extends Character {
     datastore: DataStore
   ) {
     super(p5, position, intersectManager, datastore);
-    this._p5 = p5;
     this.imagePath = imagePath;
+    this.loadImage();
   }
+
   public loadImage(): void {
     this._image = this._p5.loadImage(this.imagePath);
+  }
+
+  draw() {
+    if (this._image) {
+      this._p5.imageMode(this._p5.CENTER);
+      this._p5.image(
+        this._image,
+        this._pos.x,
+        this._pos.y,
+        this._size,
+        this._size
+      );
+    }
   }
 }

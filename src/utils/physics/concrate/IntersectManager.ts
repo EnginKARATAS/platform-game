@@ -3,7 +3,6 @@ import { Renderable } from "../abstract/Renderable";
 import { Intersectable } from "../abstract/Intersectable";
 export class IntersectManager implements Intersectable {
   intersectTwo(obj1: Character, obj2: Renderable): boolean {
-    //A, B, C, D is diagonal of the rect object
     let A = obj1.getPos().x > obj2.getPos().x;
     let B = obj1.getPos().x < obj2.getPos().x + obj2.getSize().x;
     let C = obj1.getPos().y > obj2.getPos().y;

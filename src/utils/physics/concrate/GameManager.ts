@@ -6,7 +6,6 @@ export class GameManager {
   constructor() {}
 
   public static endTheGame(p5: p5, character: Character) {
-    //failed screen
     p5.background(0);
     p5.fill(255);
     p5.textSize(32);

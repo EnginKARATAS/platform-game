@@ -13,9 +13,9 @@ import { EnvironmentConstants } from "./constants/concrate/EnvironmentConstants"
 import { GameManager } from "./utils/physics/concrate/GameManager";
 
 const sketch = (p5: P5) => {
-  let sprite_sheet; //variable to hold the image + info
-  let sprite_sheet_animation; //variable to hold a stand-alone animation
-  let laptopObj; //sprite object to attach the animation to
+  let sprite_sheet;
+  let sprite_sheet_animation;
+  let laptopObj;
   var sprite;
 
   let dataStore: DataStore;
@@ -24,7 +24,7 @@ const sketch = (p5: P5) => {
   let moly: Moly;
   let intersectManager: IntersectManager;
   p5.preload = () => {
-    // sprite_sheet = loadSpriteSheet("./sprite/assets/Run.png", 128, 128, 179);
+    p5.loadImage(Path.hammermanImg);
   };
 
   p5.setup = () => {
@@ -41,13 +41,11 @@ const sketch = (p5: P5) => {
     moly = new Moly(
       p5,
       p5.createVector(25, 140),
-      Path.molyImg,
       intersectManager,
       dataStore
     );
     boarder = new Boarder(p5);
 
-    //render initial platforms and ground objects
     for (let i = 0; i < 3; i++) {
       const platform = new Platform(
         p5,
@@ -66,7 +64,6 @@ const sketch = (p5: P5) => {
 
   p5.draw = () => {
     if (EnvironmentConstants.MENU == 0) {
-      //menu
       var x = p5.mouseX;
       var y = p5.mouseY;
       p5.background(0);
@@ -86,7 +83,6 @@ const sketch = (p5: P5) => {
       p5.textSize(32);
       p5.text("github.com/platform-game", 75, 200);
     } else if (EnvironmentConstants.MENU == 1) {
-      //game
       p5.background(170);
 
       p5.scale(2);
@@ -124,7 +120,6 @@ const sketch = (p5: P5) => {
         moly.getPos().y.toString(),
       ]);
     } else if (EnvironmentConstants.MENU == 2) {
-      //failed screen
       p5.background(0);
       p5.fill(255);
       p5.textSize(32);
@@ -139,5 +134,5 @@ const sketch = (p5: P5) => {
     };
     PlayerControl.keyboardController(p5, moly);
   };
-}; // end of sketch
+};
 new P5(sketch);

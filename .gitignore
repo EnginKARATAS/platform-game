@@ -1,5 +1,4 @@
 node_modules
-.parcel-cache
 .cache
 *.map
 # Build artifacts

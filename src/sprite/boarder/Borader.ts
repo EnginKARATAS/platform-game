@@ -34,7 +34,6 @@ export class Boarder {
   }
 
   private showBoarderRelative(character: Character): void {
-    //p5 rect opacity
     this.p5.fill(0, 60, 0, 20);
     this.p5.rect(this.boarderPos.x, this.boarderPos.y, 40, 20);
     this.p5.fill(0, 0, 0, 100);

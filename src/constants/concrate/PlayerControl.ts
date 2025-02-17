@@ -9,7 +9,6 @@ export class PlayerControl {
         EnvironmentConstants.MENU = 1;
       }
 
-      //p5.key == "w" or p5.keyCode == 68 doesnt work
       if (p5.keyCode === p5.RIGHT_ARROW) {
         character._movingRight = true;
       } else if (p5.keyCode === p5.LEFT_ARROW) {
