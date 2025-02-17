@@ -22,7 +22,30 @@ export class GameManager {
     }
   }
 
- 
+  static performAction(action: string, character: Character): void {
+    switch (action) {
+      case 'moveUp':
+        character.jump();
+        break;
+      case 'moveLeft':
+        character._movingLeft = true;
+        character._movingRight = false;
+        if (character._jumpingCounter === 0) {
+          character.setState("moving");
+        }
+        break;
+      case 'moveRight':
+        character._movingRight = true;
+        character._movingLeft = false;
+        if (character._jumpingCounter === 0) {
+          character.setState("moving");
+        }
+        break;
+      case 'moveDown':
+        // Implement if needed
+        break;
+    }
+  }
 
   update() {
     this.characters.forEach(character => {

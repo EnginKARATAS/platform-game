@@ -67,10 +67,10 @@ export class PlayerControl {
     };
   }
 }
-
 function handleKeyDown(event: KeyboardEvent, character: Character) {
   const action = KEY_BINDINGS[event.key as keyof typeof KEY_BINDINGS];
   if (action) {
     GameManager.performAction(action, character);
   }
 }
+
