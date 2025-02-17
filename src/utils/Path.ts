@@ -1,5 +1,5 @@
 export class Path{
-    static molyImg: string = "/src/image/moly.png"
-    static hammermanImg: string = "./src/image/hammerman.png"
-    static grassImg: string = "./src/image/grass.png"
+    static molyImg: string = "/images/moly.png"
+    static hammermanImg: string = "/images/hammerman.png"
+    static grassImg: string = "/images/grass.png"
 }
