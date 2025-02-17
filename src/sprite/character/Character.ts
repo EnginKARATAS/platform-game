@@ -18,6 +18,7 @@ export abstract class Character implements Intersectable, Renderable, Skill {
   public _pos: Vector;
   public _speed: number;
   public _size: number;
+  protected state: string = 'idle';
   constructor(
     p5: p5,
     position: Vector,
@@ -72,5 +73,21 @@ export abstract class Character implements Intersectable, Renderable, Skill {
     p5.noStroke();
     p5.fill("black");
     p5.ellipse(this._pos.x, this._pos.y, this._size);
+  }
+
+  resetState() {
+    this._movingRight = false;
+    this._movingLeft = false;
+    this._jumpingCounter = 0;
+    this.velocity = this._p5.createVector(0, 0); // Reset velocity
+    this.state = 'idle'; // Reset state
+  }
+
+  setState(newState: string): void {
+    this.state = newState;
+  }
+  
+  getState(): string {
+    return this.state;
   }
 }

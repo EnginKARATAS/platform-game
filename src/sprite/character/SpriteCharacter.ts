@@ -1,4 +1,4 @@
-import p5, { Image } from "p5";
+import p5, { Image, Vector } from "p5";
 import { Character } from "./Character";
 import DataStore from "../../providers/DataStore";
 import { IntersectManager } from "../../utils/physics/concrate/IntersectManager";
@@ -10,6 +10,8 @@ export abstract class SpriteCharacter extends Character {
     protected frameWidth: number = 280;
     protected frameHeight: number = 385;
     protected animationSpeed: number = 0.2;
+    protected velocity: Vector;
+    protected state: string;
 
     constructor(
         p5: p5,
@@ -20,6 +22,8 @@ export abstract class SpriteCharacter extends Character {
     ) {
         super(p5, position, intersectManager, dataStore);
         this.loadSprite();
+        this.velocity = p5.createVector(0, 0);
+        this.state = 'idle';
     }
 
     protected loadSprite(): void {
@@ -67,5 +71,30 @@ export abstract class SpriteCharacter extends Character {
             this._p5.fill('red');
             this._p5.ellipse(this._pos.x, this._pos.y, this._size);
         }
+    }
+
+    updatePosition() {
+        if (this.isIdle()) {
+            this.velocity.x = 0;
+            this.velocity.y = 0;
+        } else if (this._movingRight) {
+            this.velocity.x = this._speed;
+            this.state = 'moving';
+        } else if (this._movingLeft) {
+            this.velocity.x = -this._speed;
+            this.state = 'moving';
+        }
+
+        // Apply velocity to position
+        this._pos.add(this.velocity);
+    }
+
+    isIdle() {
+        return this.state === 'idle' && !this._movingLeft && !this._movingRight;
+    }
+
+    intersectWithGround() {
+        this.velocity.y = 0; // Stop vertical movement
+        this.state = 'idle'; // Set state to idle
     }
 } 

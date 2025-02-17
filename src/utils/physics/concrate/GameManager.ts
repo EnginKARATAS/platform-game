@@ -16,7 +16,37 @@ export class GameManager {
       EnvironmentConstants.MENU = 2;
       character.setPos({ x: 25, y: 40 });
       character.setSpeed(0);
+      character.resetState();
     }
     console.log("Game Over");
+  }
+
+  public static performAction(action: string, character: Character) {
+    switch (action) {
+      case 'moveUp':
+        character.jump();
+        character.state = 'jumping';
+        break;
+      case 'moveDown':
+        // Logic to move character down, if applicable
+        break;
+      case 'moveLeft':
+        character._movingLeft = true;
+        character.state = 'moving';
+        break;
+      case 'moveRight':
+        character._movingRight = true;
+        character.state = 'moving';
+        break;
+      default:
+        console.warn(`Unhandled action: ${action}`);
+    }
+  }
+
+  update() {
+    this.characters.forEach(character => {
+      character.updatePosition();
+    });
+    // existing update logic...
   }
 }
