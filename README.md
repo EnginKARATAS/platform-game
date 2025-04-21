@@ -10,3 +10,5 @@ Game starting on app.ts file
 3. `npm start`
    
 ![image](https://github.com/user-attachments/assets/fae04ffc-28d3-4768-a01c-429a83548086)
+
+https://platform-game-eosin.vercel.app/
