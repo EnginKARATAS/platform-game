@@ -8,3 +8,5 @@ Game starting on app.ts file
 1. Download the project
 2. `npm install`
 3. `npm start`
+   
+![image](https://github.com/user-attachments/assets/fae04ffc-28d3-4768-a01c-429a83548086)
